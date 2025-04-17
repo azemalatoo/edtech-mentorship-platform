@@ -1,18 +1,17 @@
 # EdTech Mentorship Platform
 
-A robust EdTech mentorship platform built with **Spring Boot** that connects **mentees** with experienced **mentors** based on personalized preferences, interests, and goals.
-The platform offers intelligent mentor-matching, paid mentorship packages, session scheduling, feedback systems, and much more.
+EdTech mentorship platform built with **Spring Boot** that connects **mentees** with experienced **mentors** based on personalized preferences, interests, and goals.
+The platform offers mentor-matching, paid mentorship packages, session scheduling, feedback systems, and much more.
 
 ## 🚀 Features
 
 - 🔐 User Registration and Authentication (JWT)  
 - 👤 Mentor & Mentee Profile Management  
-- 🧠 Intelligent Mentor-Mentee Matching  
+- 🧠 Mentor-Mentee Matching  
 - 📆 Session Booking and Scheduling  
-- 💬 In-App Messaging (Planned)  
+- 💬 In-App Messaging  
 - 🎯 Learning Goals & Progress Tracking  
 - ⭐ Session Reviews & Feedback  
-- 📄 Certificate Generation (Planned)  
 - 🧾 Paid Mentorship Packages with Role-Based Access  
 - 🛠 Admin Dashboard & Moderation Tools  
 - 📚 Swagger/OpenAPI Documentation  
@@ -44,7 +43,7 @@ src/
 ├── security/          # JWT and Spring Security config
 ├── service/           # Service interfaces and business logic
 ├── services/impl/     # Service implementations
-└── config/            # Swagger & CORS configurations
+└── config/            # Swagger configurations
 ```
 
 ---
@@ -73,26 +72,8 @@ To run all tests:
 ### Clone the Project
 
 ```
-git clone https://github.com/yourusername/mentorconnect-edtech-platform.git
-cd mentorconnect-edtech-platform
-```
-
-### Configure the Database
-
-Edit your `application.properties`:
-
-```
-spring.datasource.url=jdbc:postgresql://localhost:5432/mentorconnect
-spring.datasource.username=your_username
-spring.datasource.password=your_password
-spring.jpa.hibernate.ddl-auto=update
-```
-
-Or use H2 for testing:
-
-```
-spring.datasource.url=jdbc:h2:mem:testdb
-spring.h2.console.enabled=true
+git clone https://github.com/azemalatoo/mentorconnect-edtech-platform.git
+cd edtech-mentorship-platform
 ```
 
 ### Run the Application
