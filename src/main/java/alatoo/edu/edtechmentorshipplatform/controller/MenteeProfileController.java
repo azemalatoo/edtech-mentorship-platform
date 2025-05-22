@@ -2,7 +2,7 @@ package alatoo.edu.edtechmentorshipplatform.controller;
 
 import alatoo.edu.edtechmentorshipplatform.dto.users.MenteeProfileRequestDto;
 import alatoo.edu.edtechmentorshipplatform.dto.users.MenteeProfileResponseDto;
-import alatoo.edu.edtechmentorshipplatform.service.MenteeProfileService;
+import alatoo.edu.edtechmentorshipplatform.services.MenteeProfileService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

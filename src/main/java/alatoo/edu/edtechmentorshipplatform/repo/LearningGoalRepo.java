@@ -8,6 +8,6 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface LearningGoalRepo extends JpaRepository<LearningGoal, UUID> {
+public interface LearningGoalRepo extends JpaRepository<LearningGoal, Long> {
     List<LearningGoal> findByMenteeId(UUID menteeId);
 }

@@ -11,7 +11,7 @@ import java.util.UUID;
 @Builder
 public class ConversationResponseDto {
 
-    private UUID id;
+    private Long id;
     private UUID mentorId;
     private UUID menteeId;
     private String conversationType;

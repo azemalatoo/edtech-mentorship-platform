@@ -1,4 +1,4 @@
-package alatoo.edu.edtechmentorshipplatform.service;
+package alatoo.edu.edtechmentorshipplatform.services;
 
 import alatoo.edu.edtechmentorshipplatform.dto.users.MenteeProfileRequestDto;
 import alatoo.edu.edtechmentorshipplatform.dto.users.MenteeProfileResponseDto;

@@ -8,6 +8,6 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface ConversationRepo extends JpaRepository<Conversation, UUID> {
-    List<Conversation> findByMentorIdOrMenteeId(UUID userId, UUID userId1);
+public interface ConversationRepo extends JpaRepository<Conversation, Long> {
+    List<Conversation> findByMentorIdOrMenteeId(UUID mentorId, UUID menteeId);
 }

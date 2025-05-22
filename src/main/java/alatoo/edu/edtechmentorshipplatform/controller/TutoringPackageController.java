@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/tutoring-packages")
@@ -38,7 +37,7 @@ public class TutoringPackageController {
             @ApiResponse(responseCode = "404", description = "Tutoring Package not found")
     })
     @PutMapping("/{id}")
-    public ResponseEntity<TutoringPackageResponseDto> update(@PathVariable UUID id, @RequestBody TutoringPackageRequestDto tutoringPackageRequestDto) {
+    public ResponseEntity<TutoringPackageResponseDto> update(@PathVariable Long id, @RequestBody TutoringPackageRequestDto tutoringPackageRequestDto) {
         TutoringPackageResponseDto updatedPackage = tutoringPackageService.update(id, tutoringPackageRequestDto);
         return new ResponseEntity<>(updatedPackage, HttpStatus.OK);
     }
@@ -49,7 +48,7 @@ public class TutoringPackageController {
             @ApiResponse(responseCode = "404", description = "Tutoring Package not found")
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable UUID id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         tutoringPackageService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -60,7 +59,7 @@ public class TutoringPackageController {
             @ApiResponse(responseCode = "404", description = "Tutoring Package not found")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<TutoringPackageResponseDto> getById(@PathVariable UUID id) {
+    public ResponseEntity<TutoringPackageResponseDto> getById(@PathVariable Long id) {
         TutoringPackageResponseDto tutoringPackage = tutoringPackageService.getById(id);
         return new ResponseEntity<>(tutoringPackage, HttpStatus.OK);
     }

@@ -39,7 +39,7 @@ public class LearningGoalServiceImpl implements LearningGoalService {
     }
 
     @Override
-    public LearningGoalResponseDto updateGoal(UUID goalId, LearningGoalRequestDto requestDto) {
+    public LearningGoalResponseDto updateGoal(Long goalId, LearningGoalRequestDto requestDto) {
         LearningGoal goal = learningGoalRepository.findById(goalId)
                 .orElseThrow(() -> new NotFoundException("Goal not found"));
         goal.setGoalTitle(requestDto.getGoalTitle());
@@ -56,7 +56,7 @@ public class LearningGoalServiceImpl implements LearningGoalService {
     }
 
     @Override
-    public LearningGoalResponseDto markAsAchieved(UUID goalId, String feedback) {
+    public LearningGoalResponseDto markAsAchieved(Long goalId, String feedback) {
         LearningGoal goal = learningGoalRepository.findById(goalId)
                 .orElseThrow(() -> new NotFoundException("Goal not found"));
         goal.setAchievedAt(LocalDateTime.now());
@@ -68,7 +68,7 @@ public class LearningGoalServiceImpl implements LearningGoalService {
     }
 
     @Override
-    public LearningGoalResponseDto getGoalById(UUID goalId) {
+    public LearningGoalResponseDto getGoalById(Long goalId) {
         LearningGoal goal = learningGoalRepository.findById(goalId)
                 .orElseThrow(() -> new NotFoundException("Goal not found"));
         return LearningGoalMapper.toDto(goal);
@@ -83,7 +83,7 @@ public class LearningGoalServiceImpl implements LearningGoalService {
     }
 
     @Override
-    public void deleteGoal(UUID goalId) {
+    public void deleteGoal(Long goalId) {
         learningGoalRepository.deleteById(goalId);
     }
 

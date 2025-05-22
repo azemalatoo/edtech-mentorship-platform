@@ -25,7 +25,9 @@ public class MenteeProfile {
     private User user;
 
     private String educationLevel;
+
     private String fieldOfStudy;
+
     private String careerGoal;
 
     @Enumerated(EnumType.STRING)

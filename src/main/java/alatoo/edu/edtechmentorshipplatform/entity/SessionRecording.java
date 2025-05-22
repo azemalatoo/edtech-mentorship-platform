@@ -20,8 +20,8 @@ import java.util.UUID;
 @Builder
 public class SessionRecording {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "session_id", referencedColumnName = "id", nullable = false)

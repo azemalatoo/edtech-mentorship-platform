@@ -57,7 +57,7 @@ public class MentorshipSessionServiceImpl implements MentorshipSessionService {
     }
 
     @Override
-    public SessionResponseDto getSessionById(UUID sessionId) {
+    public SessionResponseDto getSessionById(Long sessionId) {
         MentorshipSession session = mentorshipSessionRepository.findById(sessionId)
                 .orElseThrow(() -> new RuntimeException("Session not found"));
         return MentorshipSessionMapper.toDto(session);
@@ -80,7 +80,7 @@ public class MentorshipSessionServiceImpl implements MentorshipSessionService {
     }
 
     @Override
-    public SessionResponseDto updateSessionStatus(UUID sessionId, String status) {
+    public SessionResponseDto updateSessionStatus(Long sessionId, String status) {
         MentorshipSession session = mentorshipSessionRepository.findById(sessionId)
                 .orElseThrow(() -> new RuntimeException("Session not found"));
         session.setStatus(SessionStatus.valueOf(status));
@@ -89,7 +89,7 @@ public class MentorshipSessionServiceImpl implements MentorshipSessionService {
     }
 
     @Override
-    public void deleteSession(UUID sessionId) {
+    public void deleteSession(Long sessionId) {
         mentorshipSessionRepository.deleteById(sessionId);
     }
 }

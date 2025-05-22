@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @Data
 public class LearningGoalResponseDto {
-    private UUID id;
+    private Long id;
     private String goalTitle;
     private String description;
     private Boolean isAchieved;

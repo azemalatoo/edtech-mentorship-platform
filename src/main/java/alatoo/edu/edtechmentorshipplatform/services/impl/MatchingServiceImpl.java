@@ -28,7 +28,7 @@ public class MatchingServiceImpl implements MatchingService {
         MenteeProfile menteeProfile = menteeProfileRepository.findById(menteeProfileId)
                 .orElseThrow(() -> new NotFoundException("Mentee profile not found"));
 
-        UUID interestedCategoryId = menteeProfile.getInterestedCategory().getId();
+        Long interestedCategoryId = menteeProfile.getInterestedCategory().getId();
         Lang preferredLanguage = menteeProfile.getPreferredLanguage();
 
         List<MentorProfile> mentorsInCategory = mentorProfileRepository.findByExpertiseCategoryId(interestedCategoryId);

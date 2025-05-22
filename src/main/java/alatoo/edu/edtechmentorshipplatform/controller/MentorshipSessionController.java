@@ -42,7 +42,7 @@ public class MentorshipSessionController {
             @ApiResponse(responseCode = "404", description = "Session not found")
     })
     @GetMapping("/{sessionId}")
-    public ResponseEntity<SessionResponseDto> getSessionById(@PathVariable UUID sessionId) {
+    public ResponseEntity<SessionResponseDto> getSessionById(@PathVariable Long sessionId) {
         SessionResponseDto session = mentorshipSessionService.getSessionById(sessionId);
         return new ResponseEntity<>(session, HttpStatus.OK);
     }
@@ -73,7 +73,7 @@ public class MentorshipSessionController {
             @ApiResponse(responseCode = "404", description = "Session not found")
     })
     @PutMapping("/{sessionId}/status")
-    public ResponseEntity<SessionResponseDto> updateSessionStatus(@PathVariable UUID sessionId,
+    public ResponseEntity<SessionResponseDto> updateSessionStatus(@PathVariable Long sessionId,
                                                                   @RequestParam String status) {
         SessionResponseDto updatedSession = mentorshipSessionService.updateSessionStatus(sessionId, status);
         return new ResponseEntity<>(updatedSession, HttpStatus.OK);
@@ -85,7 +85,7 @@ public class MentorshipSessionController {
             @ApiResponse(responseCode = "404", description = "Session not found")
     })
     @DeleteMapping("/{sessionId}")
-    public ResponseEntity<Void> deleteSession(@PathVariable UUID sessionId) {
+    public ResponseEntity<Void> deleteSession(@PathVariable Long sessionId) {
         mentorshipSessionService.deleteSession(sessionId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

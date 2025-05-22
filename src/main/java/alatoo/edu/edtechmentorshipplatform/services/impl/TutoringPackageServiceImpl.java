@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,7 +45,7 @@ public class TutoringPackageServiceImpl implements TutoringPackageService {
     }
 
     @Override
-    public TutoringPackageResponseDto update(UUID id, TutoringPackageRequestDto dto) {
+    public TutoringPackageResponseDto update(Long id, TutoringPackageRequestDto dto) {
         TutoringPackage existingPackage = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Tutoring Package not found"));
 
@@ -61,14 +60,14 @@ public class TutoringPackageServiceImpl implements TutoringPackageService {
         existingPackage.setSessionLimit(dto.getSessionLimit());
         existingPackage.setSupportIncluded(dto.isSupportIncluded());
         existingPackage.setStatus(dto.getStatus());
-        existingPackage.setIsActive(true); // Active by default on update
+        existingPackage.setIsActive(true);
 
         TutoringPackage updatedPackage = repository.save(existingPackage);
         return TutoringPackageMapper.toDto(updatedPackage);
     }
 
     @Override
-    public void delete(UUID id) {
+    public void delete(Long id) {
         TutoringPackage existingPackage = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Tutoring Package not found"));
 
@@ -76,7 +75,7 @@ public class TutoringPackageServiceImpl implements TutoringPackageService {
     }
 
     @Override
-    public TutoringPackageResponseDto getById(UUID id) {
+    public TutoringPackageResponseDto getById(Long id) {
         TutoringPackage tutoringPackage = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Tutoring Package not found"));
 

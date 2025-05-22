@@ -19,8 +19,8 @@ import java.util.UUID;
 @Builder
 public class CertificateRequest {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "mentee_id", referencedColumnName = "id", nullable = false)
@@ -39,7 +39,9 @@ public class CertificateRequest {
     @Enumerated(EnumType.STRING)
     private CertificateRequestStatus status;
 
-    private UUID approvedBy;
+    private UUID approvedMentor;
+
     private LocalDateTime approvedAt;
+
     private String certificateUrl;
 }

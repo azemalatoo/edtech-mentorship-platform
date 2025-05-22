@@ -66,9 +66,7 @@ public class MentorProfileServiceImpl implements MentorProfileService {
     @Override
     public void deleteMentorProfile(UUID id) {
         Optional<MentorProfile> mentorProfile = mentorProfileRepo.findById(id);
-        if (mentorProfile.isPresent()) {
-            mentorProfileRepo.delete(mentorProfile.get());
-        }
+        mentorProfile.ifPresent(mentorProfileRepo::delete);
     }
 
     @Override

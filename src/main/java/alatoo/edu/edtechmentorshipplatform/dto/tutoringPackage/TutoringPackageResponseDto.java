@@ -11,7 +11,7 @@ import java.util.UUID;
 @Data
 @Builder
 public class TutoringPackageResponseDto {
-    private UUID id;
+    private Long id;
     private UUID mentorId;
     private String title;
     private String description;

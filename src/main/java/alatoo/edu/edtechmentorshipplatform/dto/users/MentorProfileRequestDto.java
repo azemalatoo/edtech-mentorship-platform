@@ -35,7 +35,7 @@ public class MentorProfileRequestDto {
     private List<Lang> languages;
 
     @NotNull(message = "Expertise category ID is required")
-    private UUID expertiseCategoryId;
+    private Long expertiseCategoryId;
 
     @Min(value = 0, message = "Total mentees must be 0 or more")
     private int totalMentees;

@@ -1,4 +1,3 @@
-// ReviewRequestDto.java
 package alatoo.edu.edtechmentorshipplatform.dto.review;
 
 import jakarta.validation.constraints.Max;
@@ -12,7 +11,7 @@ import java.util.UUID;
 @Data
 public class ReviewRequestDto {
     @NotNull
-    private UUID sessionId;
+    private Long sessionId;
 
     @NotNull
     private UUID reviewerId;

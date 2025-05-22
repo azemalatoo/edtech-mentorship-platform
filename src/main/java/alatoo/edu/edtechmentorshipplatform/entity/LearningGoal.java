@@ -10,7 +10,6 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 @Table(name = "learning_goals")
@@ -20,20 +19,22 @@ import java.util.UUID;
 @Builder
 public class LearningGoal {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "mentee_id", referencedColumnName = "id", nullable = false)
     private User mentee;
 
     private String goalTitle;
+
     private String description;
 
     private Boolean isAchieved;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
+
     private LocalDateTime achievedAt;
 
     @ManyToOne

@@ -11,7 +11,7 @@ import java.util.UUID;
 @Builder
 public class SessionResponseDto {
 
-    private UUID id;
+    private Long id;
     private UUID mentorId;
     private UUID menteeId;
     private LocalDateTime scheduledAt;
@@ -20,5 +20,5 @@ public class SessionResponseDto {
     private SessionStatus status;
     private String notes;
     private boolean isCompleted;
-    private UUID tutoringPackageId;
+    private Long tutoringPackageId;
 }

@@ -29,19 +29,19 @@ public class MessageController {
 
     @ApiOperation(value = "Send a message in an existing conversation")
     @PostMapping("/sendMessage")
-    public MessageResponseDto sendMessage(@RequestParam UUID conversationId, @RequestParam UUID senderId, @RequestParam UUID recipientId, @RequestBody MessageRequestDto messageRequestDto) {
+    public MessageResponseDto sendMessage(@RequestParam Long conversationId, @RequestParam UUID senderId, @RequestParam UUID recipientId, @RequestBody MessageRequestDto messageRequestDto) {
         return messageService.sendMessage(conversationId, senderId, recipientId, messageRequestDto);
     }
 
     @ApiOperation(value = "Get all messages in a conversation")
     @GetMapping("/getMessages/{conversationId}")
-    public List<MessageResponseDto> getMessages(@PathVariable UUID conversationId) {
+    public List<MessageResponseDto> getMessages(@PathVariable Long conversationId) {
         return messageService.getMessagesByConversation(conversationId);
     }
 
     @ApiOperation(value = "Mark message as read")
     @PostMapping("/markAsRead/{messageId}")
-    public void markMessageAsRead(@PathVariable UUID messageId) {
+    public void markMessageAsRead(@PathVariable Long messageId) {
         messageService.markMessageAsRead(messageId);
     }
 

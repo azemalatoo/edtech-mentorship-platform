@@ -11,13 +11,13 @@ public interface MentorshipSessionService {
 
     SessionResponseDto createSession(SessionRequestDto createSessionRequestDto);
 
-    SessionResponseDto getSessionById(UUID sessionId);
+    SessionResponseDto getSessionById(Long sessionId);
 
     List<SessionResponseDto> getSessionsByMentor(UUID mentorId);
 
     List<SessionResponseDto> getSessionsByMentee(UUID menteeId);
 
-    SessionResponseDto updateSessionStatus(UUID sessionId, String status);
+    SessionResponseDto updateSessionStatus(Long sessionId, String status);
 
-    void deleteSession(UUID sessionId);
+    void deleteSession(Long sessionId);
 }

@@ -10,8 +10,8 @@ import java.util.UUID;
 
 public interface MessageService {
     ConversationResponseDto createConversation(UUID mentorId, UUID menteeId, String conversationType);
-    MessageResponseDto sendMessage(UUID conversationId, UUID senderId, UUID recipientId, MessageRequestDto messageRequestDto);
-    List<MessageResponseDto> getMessagesByConversation(UUID conversationId);
-    void markMessageAsRead(UUID messageId);
+    MessageResponseDto sendMessage(Long conversationId, UUID senderId, UUID recipientId, MessageRequestDto messageRequestDto);
+    List<MessageResponseDto> getMessagesByConversation(Long conversationId);
+    void markMessageAsRead(Long messageId);
     List<ConversationResponseDto> getConversationsByUser(UUID userId);
 }

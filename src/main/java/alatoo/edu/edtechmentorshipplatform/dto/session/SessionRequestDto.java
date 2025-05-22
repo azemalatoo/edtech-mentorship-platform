@@ -18,7 +18,7 @@ public class SessionRequestDto {
     @NotNull(message = "Scheduled date and time must not be null")
     private LocalDateTime scheduledAt;
 
-    private UUID tutoringPackageId;
+    private Long tutoringPackageId;
 
     private String notes;
 }

@@ -28,21 +28,21 @@ public class LearningGoalController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Update an existing learning goal")
-    public LearningGoalResponseDto updateGoal(@PathVariable UUID id,
+    public LearningGoalResponseDto updateGoal(@PathVariable Long id,
                                               @RequestBody @Valid LearningGoalRequestDto dto) {
         return learningGoalService.updateGoal(id, dto);
     }
 
     @PutMapping("/{id}/achieve")
     @Operation(summary = "Mark goal as achieved with feedback")
-    public LearningGoalResponseDto markAsAchieved(@PathVariable UUID id,
+    public LearningGoalResponseDto markAsAchieved(@PathVariable Long id,
                                                   @RequestParam String feedback) {
         return learningGoalService.markAsAchieved(id, feedback);
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Get goal by ID")
-    public LearningGoalResponseDto getById(@PathVariable UUID id) {
+    public LearningGoalResponseDto getById(@PathVariable Long id) {
         return learningGoalService.getGoalById(id);
     }
 
@@ -60,7 +60,7 @@ public class LearningGoalController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete a goal")
-    public void deleteGoal(@PathVariable UUID id) {
+    public void deleteGoal(@PathVariable Long id) {
         learningGoalService.deleteGoal(id);
     }
 }

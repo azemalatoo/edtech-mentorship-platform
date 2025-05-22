@@ -11,12 +11,12 @@ import java.util.UUID;
 @Builder
 public class MessageResponseDto {
     
-    private UUID id;
+    private Long id;
     private UUID senderId;
     private UUID recipientId;
     private String content;
     private LocalDateTime sentAt;
     private MessageStatus status;
     private boolean isImportant;
-    private String messageType; // Text, Image, File, etc.
+    private String messageType;
 }

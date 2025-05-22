@@ -3,7 +3,7 @@ package alatoo.edu.edtechmentorshipplatform.controller;
 import alatoo.edu.edtechmentorshipplatform.dto.users.MenteeProfileRequestDto;
 import alatoo.edu.edtechmentorshipplatform.dto.users.MenteeProfileResponseDto;
 import alatoo.edu.edtechmentorshipplatform.enums.Lang;
-import alatoo.edu.edtechmentorshipplatform.service.MenteeProfileService;
+import alatoo.edu.edtechmentorshipplatform.services.MenteeProfileService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

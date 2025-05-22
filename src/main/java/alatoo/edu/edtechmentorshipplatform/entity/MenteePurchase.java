@@ -1,5 +1,6 @@
 package alatoo.edu.edtechmentorshipplatform.entity;
 
+import alatoo.edu.edtechmentorshipplatform.enums.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 @Table(name = "mentee_purchases")
@@ -17,8 +17,8 @@ import java.util.UUID;
 @Builder
 public class MenteePurchase {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "mentee_id", referencedColumnName = "id", nullable = false)
@@ -29,13 +29,11 @@ public class MenteePurchase {
     private TutoringPackage tutoringPackage;
 
     private LocalDateTime purchasedAt = LocalDateTime.now();
+
     private LocalDateTime expiresAt;
+
     private int sessionsRemaining;
     
     @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;
-
-    public enum PaymentStatus {
-        PENDING, PAID, FAILED, REFUNDED
-    }
 }

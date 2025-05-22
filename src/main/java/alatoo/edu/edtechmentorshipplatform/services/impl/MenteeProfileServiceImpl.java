@@ -7,7 +7,7 @@ import alatoo.edu.edtechmentorshipplatform.entity.User;
 import alatoo.edu.edtechmentorshipplatform.mapper.MenteeProfileMapper;
 import alatoo.edu.edtechmentorshipplatform.repo.MenteeProfileRepo;
 import alatoo.edu.edtechmentorshipplatform.repo.UserRepo;
-import alatoo.edu.edtechmentorshipplatform.service.MenteeProfileService;
+import alatoo.edu.edtechmentorshipplatform.services.MenteeProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

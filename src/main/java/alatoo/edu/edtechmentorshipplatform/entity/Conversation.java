@@ -20,8 +20,8 @@ import java.util.UUID;
 @Builder
 public class Conversation {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "mentor_id", referencedColumnName = "id", nullable = false)

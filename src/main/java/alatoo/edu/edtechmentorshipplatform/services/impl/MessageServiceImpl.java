@@ -50,7 +50,7 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public MessageResponseDto sendMessage(UUID conversationId, UUID senderId, UUID recipientId, MessageRequestDto messageRequestDto) {
+    public MessageResponseDto sendMessage(Long conversationId, UUID senderId, UUID recipientId, MessageRequestDto messageRequestDto) {
         Conversation conversation = conversationRepository.findById(conversationId).orElseThrow(() -> new RuntimeException("Conversation not found"));
         User sender = userRepository.findById(senderId).orElseThrow(() -> new RuntimeException("Sender not found"));
         User recipient = userRepository.findById(recipientId).orElseThrow(() -> new RuntimeException("Recipient not found"));
@@ -68,7 +68,7 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public List<MessageResponseDto> getMessagesByConversation(UUID conversationId) {
+    public List<MessageResponseDto> getMessagesByConversation(Long conversationId) {
         List<Message> messages = messageRepository.findByConversationId(conversationId);
         return messages.stream()
                 .map(MessageMapper::toDto)
@@ -76,7 +76,7 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public void markMessageAsRead(UUID messageId) {
+    public void markMessageAsRead(Long messageId) {
         Message message = messageRepository.findById(messageId).orElseThrow(() -> new RuntimeException("Message not found"));
         message.setStatus(MessageStatus.READ);
         messageRepository.save(message);

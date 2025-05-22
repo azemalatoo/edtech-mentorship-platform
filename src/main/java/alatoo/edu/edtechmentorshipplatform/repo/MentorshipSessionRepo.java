@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface MentorshipSessionRepo extends JpaRepository<MentorshipSession, UUID> {
+public interface MentorshipSessionRepo extends JpaRepository<MentorshipSession, Long> {
     List<MentorshipSession> findByMenteeId(UUID menteeId);
 
     List<MentorshipSession> findByMentorId(UUID mentorId);

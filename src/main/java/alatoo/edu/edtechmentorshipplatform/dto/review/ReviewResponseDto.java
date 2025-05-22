@@ -1,4 +1,3 @@
-// ReviewResponseDto.java
 package alatoo.edu.edtechmentorshipplatform.dto.review;
 
 import lombok.Data;
@@ -8,8 +7,8 @@ import java.util.UUID;
 
 @Data
 public class ReviewResponseDto {
-    private UUID id;
-    private UUID sessionId;
+    private Long id;
+    private Long sessionId;
     private UUID reviewerId;
     private UUID revieweeId;
     private int rating;

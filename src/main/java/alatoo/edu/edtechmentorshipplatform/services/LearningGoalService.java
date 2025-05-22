@@ -9,10 +9,10 @@ import java.util.UUID;
 
 public interface LearningGoalService {
     LearningGoalResponseDto createGoal(LearningGoalRequestDto requestDto);
-    LearningGoalResponseDto updateGoal(UUID goalId, LearningGoalRequestDto requestDto);
-    LearningGoalResponseDto markAsAchieved(UUID goalId, String feedback);
-    LearningGoalResponseDto getGoalById(UUID goalId);
+    LearningGoalResponseDto updateGoal(Long goalId, LearningGoalRequestDto requestDto);
+    LearningGoalResponseDto markAsAchieved(Long goalId, String feedback);
+    LearningGoalResponseDto getGoalById(Long goalId);
     List<LearningGoalResponseDto> getGoalsByMentee(UUID menteeId);
-    void deleteGoal(UUID goalId);
+    void deleteGoal(Long goalId);
     List<LearningGoalResponseDto> getAllGoals();
 }

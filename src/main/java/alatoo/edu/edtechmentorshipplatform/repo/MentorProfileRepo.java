@@ -12,5 +12,5 @@ import java.util.UUID;
 public interface MentorProfileRepo extends JpaRepository<MentorProfile, UUID> {
     Optional<MentorProfile> findByUserId(UUID userId);
 
-    List<MentorProfile> findByExpertiseCategoryId(UUID interestedCategoryId);
+    List<MentorProfile> findByExpertiseCategoryId(Long interestedCategoryId);
 }
