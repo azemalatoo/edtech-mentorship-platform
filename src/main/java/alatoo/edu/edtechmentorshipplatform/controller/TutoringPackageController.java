@@ -2,13 +2,15 @@ package alatoo.edu.edtechmentorshipplatform.controller;
 
 import alatoo.edu.edtechmentorshipplatform.dto.tutoringPackage.TutoringPackageRequestDto;
 import alatoo.edu.edtechmentorshipplatform.dto.tutoringPackage.TutoringPackageResponseDto;
+import alatoo.edu.edtechmentorshipplatform.util.ResponseApi;
+import alatoo.edu.edtechmentorshipplatform.util.ResponseCode;
 import alatoo.edu.edtechmentorshipplatform.services.TutoringPackageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,56 +23,64 @@ public class TutoringPackageController {
     private final TutoringPackageService tutoringPackageService;
 
     @Operation(summary = "Create a new tutoring package")
-    @ApiResponses(value = {
+    @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Tutoring Package created successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid input")
     })
     @PostMapping
-    public ResponseEntity<TutoringPackageResponseDto> create(@RequestBody TutoringPackageRequestDto tutoringPackageRequestDto) {
-        TutoringPackageResponseDto createdPackage = tutoringPackageService.create(tutoringPackageRequestDto);
-        return new ResponseEntity<>(createdPackage, HttpStatus.CREATED);
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseApi<TutoringPackageResponseDto> create(
+            @Valid @RequestBody TutoringPackageRequestDto dto) {
+        TutoringPackageResponseDto result = tutoringPackageService.create(dto);
+        return new ResponseApi<>(result, ResponseCode.CREATED);
     }
 
     @Operation(summary = "Update an existing tutoring package")
-    @ApiResponses(value = {
+    @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Tutoring Package updated successfully"),
             @ApiResponse(responseCode = "404", description = "Tutoring Package not found")
     })
     @PutMapping("/{id}")
-    public ResponseEntity<TutoringPackageResponseDto> update(@PathVariable Long id, @RequestBody TutoringPackageRequestDto tutoringPackageRequestDto) {
-        TutoringPackageResponseDto updatedPackage = tutoringPackageService.update(id, tutoringPackageRequestDto);
-        return new ResponseEntity<>(updatedPackage, HttpStatus.OK);
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseApi<TutoringPackageResponseDto> update(
+            @PathVariable Long id,
+            @Valid @RequestBody TutoringPackageRequestDto dto) {
+        TutoringPackageResponseDto result = tutoringPackageService.update(id, dto);
+        return new ResponseApi<>(result, ResponseCode.SUCCESS);
     }
 
     @Operation(summary = "Delete a tutoring package")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Tutoring Package deleted successfully"),
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Tutoring Package deleted successfully"),
             @ApiResponse(responseCode = "404", description = "Tutoring Package not found")
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseApi<Void> delete(@PathVariable Long id) {
         tutoringPackageService.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseApi<>(null, ResponseCode.SUCCESS);
     }
 
     @Operation(summary = "Get a tutoring package by ID")
-    @ApiResponses(value = {
+    @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Tutoring Package found"),
             @ApiResponse(responseCode = "404", description = "Tutoring Package not found")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<TutoringPackageResponseDto> getById(@PathVariable Long id) {
-        TutoringPackageResponseDto tutoringPackage = tutoringPackageService.getById(id);
-        return new ResponseEntity<>(tutoringPackage, HttpStatus.OK);
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseApi<TutoringPackageResponseDto> getById(@PathVariable Long id) {
+        TutoringPackageResponseDto result = tutoringPackageService.getById(id);
+        return new ResponseApi<>(result, ResponseCode.SUCCESS);
     }
 
     @Operation(summary = "Get all tutoring packages")
-    @ApiResponses(value = {
+    @ApiResponses({
             @ApiResponse(responseCode = "200", description = "List of all Tutoring Packages")
     })
     @GetMapping
-    public ResponseEntity<List<TutoringPackageResponseDto>> getAll() {
-        List<TutoringPackageResponseDto> tutoringPackages = tutoringPackageService.getAll();
-        return new ResponseEntity<>(tutoringPackages, HttpStatus.OK);
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseApi<List<TutoringPackageResponseDto>> getAll() {
+        List<TutoringPackageResponseDto> result = tutoringPackageService.getAll();
+        return new ResponseApi<>(result, ResponseCode.SUCCESS);
     }
 }
