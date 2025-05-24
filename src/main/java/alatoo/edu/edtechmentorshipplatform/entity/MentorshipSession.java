@@ -40,7 +40,7 @@ public class MentorshipSession {
     @Column(length = 1000)
     private String notes;
 
-    private boolean isCompleted = false;
+    private boolean isCompleted;
 
     @ManyToOne
     @JoinColumn(name = "package_id", referencedColumnName = "id")

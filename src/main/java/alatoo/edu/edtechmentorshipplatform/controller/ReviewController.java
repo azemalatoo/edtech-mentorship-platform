@@ -1,5 +1,6 @@
 package alatoo.edu.edtechmentorshipplatform.controller;
 
+import alatoo.edu.edtechmentorshipplatform.controller.base.BaseRestController;
 import alatoo.edu.edtechmentorshipplatform.dto.review.ReviewRequestDto;
 import alatoo.edu.edtechmentorshipplatform.dto.review.ReviewResponseDto;
 import alatoo.edu.edtechmentorshipplatform.util.ResponseApi;
@@ -16,10 +17,10 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/reviews")
+@RequestMapping("/reviews")
 @RequiredArgsConstructor
 @Tag(name = "Review Controller", description = "APIs for rating and feedback after sessions")
-public class ReviewController {
+public class ReviewController extends BaseRestController {
 
     private final ReviewService reviewService;
 

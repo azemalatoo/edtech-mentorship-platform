@@ -1,5 +1,6 @@
 package alatoo.edu.edtechmentorshipplatform.controller;
 
+import alatoo.edu.edtechmentorshipplatform.controller.base.BaseRestController;
 import alatoo.edu.edtechmentorshipplatform.dto.learningGoal.LearningGoalRequestDto;
 import alatoo.edu.edtechmentorshipplatform.dto.learningGoal.LearningGoalResponseDto;
 import alatoo.edu.edtechmentorshipplatform.util.ResponseApi;
@@ -18,10 +19,10 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/goals")
+@RequestMapping("/goals")
 @RequiredArgsConstructor
-@Tag(name = "Learning Goals", description = "Manage learning goals and progress tracking")
-public class LearningGoalController {
+@Tag(name = "LearningGoalController", description = "APIs for managing learning goals and progress tracking")
+public class LearningGoalController extends BaseRestController {
 
     private final LearningGoalService learningGoalService;
 

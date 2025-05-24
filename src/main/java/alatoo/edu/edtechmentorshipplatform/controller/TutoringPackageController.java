@@ -1,5 +1,6 @@
 package alatoo.edu.edtechmentorshipplatform.controller;
 
+import alatoo.edu.edtechmentorshipplatform.controller.base.BaseRestController;
 import alatoo.edu.edtechmentorshipplatform.dto.tutoringPackage.TutoringPackageRequestDto;
 import alatoo.edu.edtechmentorshipplatform.dto.tutoringPackage.TutoringPackageResponseDto;
 import alatoo.edu.edtechmentorshipplatform.util.ResponseApi;
@@ -8,6 +9,7 @@ import alatoo.edu.edtechmentorshipplatform.services.TutoringPackageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,9 +18,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/tutoring-packages")
+@RequestMapping("/tutoring-packages")
 @RequiredArgsConstructor
-public class TutoringPackageController {
+@Tag(name = "Review Controller", description = "APIs for managing tutoring packages")
+public class TutoringPackageController extends BaseRestController {
 
     private final TutoringPackageService tutoringPackageService;
 

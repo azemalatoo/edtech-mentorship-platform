@@ -1,5 +1,6 @@
 package alatoo.edu.edtechmentorshipplatform.controller;
 
+import alatoo.edu.edtechmentorshipplatform.controller.base.BaseRestController;
 import alatoo.edu.edtechmentorshipplatform.dto.users.MentorProfileRequestDto;
 import alatoo.edu.edtechmentorshipplatform.dto.users.MentorProfileResponseDto;
 import alatoo.edu.edtechmentorshipplatform.services.MentorProfileService;
@@ -9,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,9 +19,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/mentor-profile")
+@RequestMapping("/mentor-profile")
 @RequiredArgsConstructor
-public class MentorProfileController {
+@Tag(name = "MenteeProfileController", description = "APIs for managing mentor profiles")
+public class MentorProfileController extends BaseRestController {
 
     private final MentorProfileService mentorProfileService;
 

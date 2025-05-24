@@ -1,13 +1,14 @@
 package alatoo.edu.edtechmentorshipplatform.controller;
 
+import alatoo.edu.edtechmentorshipplatform.controller.base.BaseRestController;
 import alatoo.edu.edtechmentorshipplatform.dto.chat.ConversationResponseDto;
 import alatoo.edu.edtechmentorshipplatform.dto.chat.MessageRequestDto;
 import alatoo.edu.edtechmentorshipplatform.dto.chat.MessageResponseDto;
 import alatoo.edu.edtechmentorshipplatform.util.ResponseApi;
 import alatoo.edu.edtechmentorshipplatform.util.ResponseCode;
 import alatoo.edu.edtechmentorshipplatform.services.MessageService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,14 +18,14 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/messages")
-@Api(value = "Messaging/Chat", tags = "Messaging/Chat Operations")
+@RequestMapping("/messages")
 @RequiredArgsConstructor
-public class MessageController {
+@Tag(name = "MessageController", description = "Endpoints for communication between mentees and mentors")
+public class MessageController extends BaseRestController {
 
     private final MessageService messageService;
 
-    @ApiOperation(value = "Create a conversation between mentor and mentee")
+    @Operation(summary = "Create a conversation between mentor and mentee")
     @PostMapping("/createConversation")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseApi<ConversationResponseDto> createConversation(
@@ -36,7 +37,7 @@ public class MessageController {
         return new ResponseApi<>(result, ResponseCode.CREATED);
     }
 
-    @ApiOperation(value = "Send a message in an existing conversation")
+    @Operation(summary = "Send a message in an existing conversation")
     @PostMapping("/sendMessage")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseApi<MessageResponseDto> sendMessage(
@@ -49,7 +50,7 @@ public class MessageController {
         return new ResponseApi<>(result, ResponseCode.CREATED);
     }
 
-    @ApiOperation(value = "Get all messages in a conversation")
+    @Operation(summary = "Get all messages in a conversation")
     @GetMapping("/getMessages/{conversationId}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseApi<List<MessageResponseDto>> getMessages(
@@ -59,7 +60,7 @@ public class MessageController {
         return new ResponseApi<>(result, ResponseCode.SUCCESS);
     }
 
-    @ApiOperation(value = "Mark message as read")
+    @Operation(summary = "Mark message as read")
     @PostMapping("/markAsRead/{messageId}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseApi<Void> markMessageAsRead(@PathVariable Long messageId) {
@@ -67,7 +68,7 @@ public class MessageController {
         return new ResponseApi<>(null, ResponseCode.SUCCESS);
     }
 
-    @ApiOperation(value = "Get all conversations for a user")
+    @Operation(summary = "Get all conversations for a user")
     @GetMapping("/getConversations/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseApi<List<ConversationResponseDto>> getConversations(@PathVariable UUID userId) {

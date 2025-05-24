@@ -1,5 +1,6 @@
 package alatoo.edu.edtechmentorshipplatform.controller;
 
+import alatoo.edu.edtechmentorshipplatform.controller.base.BaseRestController;
 import alatoo.edu.edtechmentorshipplatform.dto.auth.LoginRequest;
 import alatoo.edu.edtechmentorshipplatform.dto.auth.LoginResponse;
 import alatoo.edu.edtechmentorshipplatform.dto.auth.RegisterRequest;
@@ -18,10 +19,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/auth")
-@Tag(name = "Authentication", description = "User registration and login")
+@RequestMapping("/auth")
+@Tag(name = "AuthenticationController", description = "APIs for user authentication")
 @RequiredArgsConstructor
-public class AuthenticationController {
+public class AuthenticationController extends BaseRestController{
 
     private final UserAuthService authService;
 

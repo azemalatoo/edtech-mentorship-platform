@@ -1,5 +1,6 @@
 package alatoo.edu.edtechmentorshipplatform.controller;
 
+import alatoo.edu.edtechmentorshipplatform.controller.base.BaseRestController;
 import alatoo.edu.edtechmentorshipplatform.dto.session.SessionRequestDto;
 import alatoo.edu.edtechmentorshipplatform.dto.session.SessionResponseDto;
 import alatoo.edu.edtechmentorshipplatform.util.ResponseApi;
@@ -8,6 +9,7 @@ import alatoo.edu.edtechmentorshipplatform.services.MentorshipSessionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,9 +19,10 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/mentorship-sessions")
+@RequestMapping("/mentorship-sessions")
 @RequiredArgsConstructor
-public class MentorshipSessionController {
+@Tag(name = "MentorshipSessionController", description = "APIs for managing mentorship sessions")
+public class MentorshipSessionController extends BaseRestController {
 
     private final MentorshipSessionService mentorshipSessionService;
 

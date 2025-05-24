@@ -1,5 +1,6 @@
 package alatoo.edu.edtechmentorshipplatform.controller;
 
+import alatoo.edu.edtechmentorshipplatform.controller.base.BaseRestController;
 import alatoo.edu.edtechmentorshipplatform.dto.users.MenteeProfileRequestDto;
 import alatoo.edu.edtechmentorshipplatform.dto.users.MenteeProfileResponseDto;
 import alatoo.edu.edtechmentorshipplatform.util.ResponseApi;
@@ -8,6 +9,7 @@ import alatoo.edu.edtechmentorshipplatform.services.MenteeProfileService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,9 +19,10 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/mentee-profiles")
+@RequestMapping("/mentee-profiles")
 @RequiredArgsConstructor
-public class MenteeProfileController {
+@Tag(name = "MenteeProfileController", description = "APIs for managing mentee profiles")
+public class MenteeProfileController extends BaseRestController {
 
     private final MenteeProfileService menteeProfileService;
 

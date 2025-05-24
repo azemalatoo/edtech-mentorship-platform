@@ -50,6 +50,7 @@ public class MentorshipSessionServiceImpl implements MentorshipSessionService {
                 .status(SessionStatus.SCHEDULED)
                 .notes(createSessionRequestDto.getNotes())
                 .tutoringPackage(tutoringPackage)
+                .isCompleted(false)
                 .build();
 
         MentorshipSession savedSession = mentorshipSessionRepository.save(session);
