@@ -5,6 +5,7 @@ import alatoo.edu.edtechmentorshipplatform.dto.review.ReviewResponseDto;
 import alatoo.edu.edtechmentorshipplatform.services.ReviewService;
 import alatoo.edu.edtechmentorshipplatform.util.ResponseApi;
 import alatoo.edu.edtechmentorshipplatform.util.ResponseCode;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,6 +17,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/reviews")
+@Tag(name = "ReviewController", description = "APIs for managing session reviews")
 @RequiredArgsConstructor
 public class ReviewController {
     private final ReviewService reviewService;

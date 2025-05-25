@@ -6,6 +6,7 @@ import alatoo.edu.edtechmentorshipplatform.enums.GoalStatus;
 import alatoo.edu.edtechmentorshipplatform.services.LearningGoalService;
 import alatoo.edu.edtechmentorshipplatform.util.ResponseApi;
 import alatoo.edu.edtechmentorshipplatform.util.ResponseCode;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,6 +17,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/goals")
+@Tag(name = "LearningGoalController", description = "APIs for managing learning goals")
 @RequiredArgsConstructor
 public class LearningGoalController {
     private final LearningGoalService service;

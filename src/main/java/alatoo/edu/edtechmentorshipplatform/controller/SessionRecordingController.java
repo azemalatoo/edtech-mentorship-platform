@@ -5,6 +5,7 @@ import alatoo.edu.edtechmentorshipplatform.dto.session.SessionRecordingResponseD
 import alatoo.edu.edtechmentorshipplatform.services.SessionRecordingService;
 import alatoo.edu.edtechmentorshipplatform.util.ResponseApi;
 import alatoo.edu.edtechmentorshipplatform.util.ResponseCode;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/session-recordings")
+@Tag(name = "SessionRecordingController", description = "APIs for managing session recordings")
 @RequiredArgsConstructor
 public class SessionRecordingController {
     private final SessionRecordingService recordingService;

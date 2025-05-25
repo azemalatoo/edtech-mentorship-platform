@@ -5,6 +5,7 @@ import alatoo.edu.edtechmentorshipplatform.entity.MentorProfile;
 import alatoo.edu.edtechmentorshipplatform.services.AdminMentorService;
 import alatoo.edu.edtechmentorshipplatform.util.ResponseApi;
 import alatoo.edu.edtechmentorshipplatform.util.ResponseCode;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,6 +16,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/admin/mentors")
+@Tag(name = "AdminMentorController", description = "APIs for admin mentor approval and management")
 @RequiredArgsConstructor
 public class AdminMentorController {
 

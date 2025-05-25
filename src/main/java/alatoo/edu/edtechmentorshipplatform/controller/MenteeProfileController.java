@@ -12,13 +12,15 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
 
+@PreAuthorize("hasRole('MENTEE')")
 @RestController
-@RequestMapping("/mentee-profiles")
+@RequestMapping("/api/v1/mentee-profiles")
 @RequiredArgsConstructor
 @Tag(name = "MenteeProfileController", description = "APIs for managing mentee profiles")
 public class MenteeProfileController {
