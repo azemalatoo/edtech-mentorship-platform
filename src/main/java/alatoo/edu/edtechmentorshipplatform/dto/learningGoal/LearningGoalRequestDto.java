@@ -5,23 +5,23 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Data
 public class LearningGoalRequestDto {
-    @NotBlank
-    private String goalTitle;
-
-    @NotBlank
-    private String description;
-
     @NotNull
     private UUID menteeId;
 
     private UUID mentorId;
 
-    @NotNull
-    private GoalStatus status;
+    @NotBlank
+    private String goalTitle;
 
-    private Boolean isAchieved;
+    private String description;
+    private LocalDate targetDate;
+    private Integer progressPercentage;
+    private String progressNotes;
+    private GoalStatus status;
+    private String feedback;
 }

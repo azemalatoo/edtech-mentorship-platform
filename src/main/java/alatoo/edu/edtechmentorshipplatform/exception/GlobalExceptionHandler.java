@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 
+import java.nio.file.AccessDeniedException;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
@@ -22,12 +23,19 @@ public class GlobalExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseApi<Void> handleValidationErrors(MethodArgumentNotValidException ex) {
+    public ResponseApi<Void> handleEmailAlreadyExistException(MethodArgumentNotValidException ex) {
         String errors = ex.getBindingResult().getFieldErrors().stream()
                 .map(fe -> fe.getField() + ": " + fe.getDefaultMessage())
                 .collect(Collectors.joining("; "));
         log.debug("Validation failed: {}", errors);
         return new ResponseApi<>(null, ResponseCode.BAD_REQUEST, errors);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public ResponseApi<Void> handleEmailAlreadyExistException(EmailAlreadyExistsException ex) {
+        log.debug("EmailAlreadyExistsException: {}", ex);
+        return new ResponseApi<>(null, ResponseCode.VALIDATION_ERROR, ex.getMessage());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -64,4 +72,20 @@ public class GlobalExceptionHandler {
                 : ResponseCode.INTERNAL_SERVER_ERROR.getMessage();
         return new ResponseApi<>(null, ResponseCode.INTERNAL_SERVER_ERROR, detail);
     }
+
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(EntityInUseException.class)
+    public ResponseApi<Void> handleEntityInUse(EntityInUseException ex) {
+        log.debug("EntityInUseException : ", ex);
+        return new ResponseApi<>(null, ResponseCode.VALIDATION_ERROR, ex.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseApi<Void> handleAccessDenied(AccessDeniedException ex) {
+        log.debug("Access denied: {}", ex.getMessage());
+        return new ResponseApi<>(null, ResponseCode.ACCESS_NOT_ALLOWED, "You do not have permission to perform this action");
+    }
+
+
 }

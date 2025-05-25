@@ -23,75 +23,92 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional
 public class LearningGoalServiceImpl implements LearningGoalService {
-
-    private final LearningGoalRepo learningGoalRepository;
-    private final UserRepo userRepository;
+    private final LearningGoalRepo goalRepo;
+    private final UserRepo userRepo;
+    private final LearningGoalMapper mapper;
 
     @Override
-    public LearningGoalResponseDto createGoal(LearningGoalRequestDto requestDto) {
-        User mentee = userRepository.findById(requestDto.getMenteeId())
+    public LearningGoalResponseDto createGoal(LearningGoalRequestDto dto) {
+        User mentee = userRepo.findById(dto.getMenteeId())
                 .orElseThrow(() -> new NotFoundException("Mentee not found"));
-        User mentor = requestDto.getMentorId() != null ?
-                userRepository.findById(requestDto.getMentorId()).orElse(null) : null;
-
-        LearningGoal goal = LearningGoalMapper.toEntity(requestDto, mentee, mentor);
-        return LearningGoalMapper.toDto(learningGoalRepository.save(goal));
+        User mentor = dto.getMentorId() != null
+                ? userRepo.findById(dto.getMentorId()).orElse(null)
+                : null;
+        LearningGoal entity = mapper.toEntity(dto, mentee, mentor);
+        entity.setStatus(GoalStatus.IN_PROGRESS);
+        LearningGoal saved = goalRepo.save(entity);
+        return mapper.toDto(saved);
     }
 
     @Override
-    public LearningGoalResponseDto updateGoal(Long goalId, LearningGoalRequestDto requestDto) {
-        LearningGoal goal = learningGoalRepository.findById(goalId)
+    public LearningGoalResponseDto updateGoal(Long id, LearningGoalRequestDto dto) {
+        LearningGoal goal = goalRepo.findById(id)
                 .orElseThrow(() -> new NotFoundException("Goal not found"));
-        goal.setGoalTitle(requestDto.getGoalTitle());
-        goal.setDescription(requestDto.getDescription());
-        goal.setStatus(requestDto.getStatus());
-
-        if (requestDto.getMentorId() != null) {
-            User mentor = userRepository.findById(requestDto.getMentorId())
-                    .orElseThrow(() -> new NotFoundException("Mentor not found"));
-            goal.setMentor(mentor);
-        }
-
-        return LearningGoalMapper.toDto(learningGoalRepository.save(goal));
+        if (dto.getGoalTitle() != null) goal.setGoalTitle(dto.getGoalTitle());
+        if (dto.getDescription() != null) goal.setDescription(dto.getDescription());
+        if (dto.getTargetDate() != null) goal.setTargetDate(dto.getTargetDate());
+        if (dto.getProgressPercentage() != null) goal.setProgressPercentage(dto.getProgressPercentage());
+        if (dto.getProgressNotes() != null) goal.setProgressNotes(dto.getProgressNotes());
+        if (dto.getStatus() != null) goal.setStatus(dto.getStatus());
+        return mapper.toDto(goalRepo.save(goal));
     }
 
     @Override
-    public LearningGoalResponseDto markAsAchieved(Long goalId, String feedback) {
-        LearningGoal goal = learningGoalRepository.findById(goalId)
+    public LearningGoalResponseDto markAsAchieved(Long id, String feedback) {
+        LearningGoal goal = goalRepo.findById(id)
                 .orElseThrow(() -> new NotFoundException("Goal not found"));
-        goal.setAchievedAt(LocalDateTime.now());
-        goal.setIsAchieved(Boolean.TRUE);
+        goal.setIsAchieved(true);
         goal.setStatus(GoalStatus.ACHIEVED);
+        goal.setAchievedAt(LocalDateTime.now());
         goal.setFeedback(feedback);
-
-        return LearningGoalMapper.toDto(learningGoalRepository.save(goal));
+        return mapper.toDto(goalRepo.save(goal));
     }
 
     @Override
-    public LearningGoalResponseDto getGoalById(Long goalId) {
-        LearningGoal goal = learningGoalRepository.findById(goalId)
+    public LearningGoalResponseDto updateProgress(Long id, Integer percent, String notes) {
+        LearningGoal goal = goalRepo.findById(id)
                 .orElseThrow(() -> new NotFoundException("Goal not found"));
-        return LearningGoalMapper.toDto(goal);
+        goal.setProgressPercentage(percent);
+        goal.setProgressNotes(notes);
+        if (percent != null && percent >= 100) {
+            goal.setIsAchieved(true);
+            goal.setStatus(GoalStatus.ACHIEVED);
+            goal.setAchievedAt(LocalDateTime.now());
+        }
+        return mapper.toDto(goalRepo.save(goal));
+    }
+
+    @Override
+    public LearningGoalResponseDto changeStatus(Long id, GoalStatus status) {
+        LearningGoal goal = goalRepo.findById(id)
+                .orElseThrow(() -> new NotFoundException("Goal not found"));
+        goal.setStatus(status);
+        if (status == GoalStatus.ACHIEVED && !goal.getIsAchieved()) {
+            goal.setIsAchieved(true);
+            goal.setAchievedAt(LocalDateTime.now());
+        }
+        return mapper.toDto(goalRepo.save(goal));
+    }
+
+    @Override
+    public LearningGoalResponseDto getGoalById(Long id) {
+        return goalRepo.findById(id)
+                .map(mapper::toDto)
+                .orElseThrow(() -> new NotFoundException("Goal not found"));
     }
 
     @Override
     public List<LearningGoalResponseDto> getGoalsByMentee(UUID menteeId) {
-        return learningGoalRepository.findByMenteeId(menteeId)
-                .stream()
-                .map(LearningGoalMapper::toDto)
+        return goalRepo.findByMentee_Id(menteeId).stream()
+                .map(mapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public void deleteGoal(Long goalId) {
-        learningGoalRepository.deleteById(goalId);
-    }
-
-    @Override
-    public List<LearningGoalResponseDto> getAllGoals() {
-        return learningGoalRepository.findAll()
-                .stream()
-                .map(LearningGoalMapper::toDto)
-                .collect(Collectors.toList());
+    public void deleteGoal(Long id) {
+        if (!goalRepo.existsById(id)) {
+            throw new NotFoundException("Goal not found");
+        }
+        goalRepo.deleteById(id);
     }
 }

@@ -1,7 +1,7 @@
 package alatoo.edu.edtechmentorshipplatform.services;
 
-import alatoo.edu.edtechmentorshipplatform.dto.users.MenteeProfileRequestDto;
-import alatoo.edu.edtechmentorshipplatform.dto.users.MenteeProfileResponseDto;
+import alatoo.edu.edtechmentorshipplatform.dto.mentee.MenteeProfileRequestDto;
+import alatoo.edu.edtechmentorshipplatform.dto.mentee.MenteeProfileResponseDto;
 import java.util.List;
 import java.util.UUID;
 

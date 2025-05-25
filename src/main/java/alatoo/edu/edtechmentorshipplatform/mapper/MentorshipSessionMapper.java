@@ -1,39 +1,36 @@
 package alatoo.edu.edtechmentorshipplatform.mapper;
 
-import alatoo.edu.edtechmentorshipplatform.dto.session.SessionResponseDto;
+import alatoo.edu.edtechmentorshipplatform.dto.session.MentorshipSessionResponseDto;
+import alatoo.edu.edtechmentorshipplatform.dto.session.SessionSlotRequestDto;
 import alatoo.edu.edtechmentorshipplatform.entity.MentorshipSession;
-import alatoo.edu.edtechmentorshipplatform.entity.TutoringPackage;
 import alatoo.edu.edtechmentorshipplatform.entity.User;
+import alatoo.edu.edtechmentorshipplatform.enums.SessionStatus;
+import org.springframework.stereotype.Component;
 
+@Component
 public class MentorshipSessionMapper {
-
-    public static MentorshipSession toEntity(SessionResponseDto dto, User mentor, User mentee, TutoringPackage tutoringPackage) {
+    public MentorshipSession toSlotEntity(SessionSlotRequestDto dto, User mentor) {
         return MentorshipSession.builder()
-                .id(dto.getId())
                 .mentor(mentor)
-                .mentee(mentee)
-                .scheduledAt(dto.getScheduledAt())
-                .startedAt(dto.getStartedAt())
-                .endedAt(dto.getEndedAt())
-                .status(dto.getStatus())
-                .notes(dto.getNotes())
-                .isCompleted(dto.isCompleted())
-                .tutoringPackage(tutoringPackage)
+                .availableFrom(dto.getAvailableFrom())
+                .availableTo(dto.getAvailableTo())
+                .status(SessionStatus.AVAILABLE)
                 .build();
     }
 
-    public static SessionResponseDto toDto(MentorshipSession entity) {
-        return SessionResponseDto.builder()
-                .id(entity.getId())
-                .mentorId(entity.getMentor().getId())
-                .menteeId(entity.getMentee().getId())
-                .scheduledAt(entity.getScheduledAt())
-                .startedAt(entity.getStartedAt())
-                .endedAt(entity.getEndedAt())
-                .status(entity.getStatus())
-                .notes(entity.getNotes())
-                .isCompleted(entity.isCompleted())
-                .tutoringPackageId(entity.getTutoringPackage() != null ? entity.getTutoringPackage().getId() : null)
+    public MentorshipSessionResponseDto toDto(MentorshipSession e) {
+        return MentorshipSessionResponseDto.builder()
+                .id(e.getId())
+                .mentorId(e.getMentor().getId())
+                .menteeId(e.getMentee()!=null?e.getMentee().getId():null)
+                .availableFrom(e.getAvailableFrom())
+                .availableTo(e.getAvailableTo())
+                .startedAt(e.getStartedAt())
+                .endedAt(e.getEndedAt())
+                .status(e.getStatus())
+                .providerType(e.getProviderType())
+                .meetingLink(e.getMeetingLink())
+                .notes(e.getNotes())
                 .build();
     }
 }

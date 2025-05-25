@@ -9,5 +9,4 @@ import java.util.UUID;
 
 @Repository
 public interface MessageRepo extends JpaRepository<Message, Long> {
-    List<Message> findByConversationId(Long conversationId);
 }

@@ -1,116 +1,80 @@
 package alatoo.edu.edtechmentorshipplatform.controller;
 
-import alatoo.edu.edtechmentorshipplatform.controller.base.BaseRestController;
 import alatoo.edu.edtechmentorshipplatform.dto.learningGoal.LearningGoalRequestDto;
 import alatoo.edu.edtechmentorshipplatform.dto.learningGoal.LearningGoalResponseDto;
+import alatoo.edu.edtechmentorshipplatform.enums.GoalStatus;
+import alatoo.edu.edtechmentorshipplatform.services.LearningGoalService;
 import alatoo.edu.edtechmentorshipplatform.util.ResponseApi;
 import alatoo.edu.edtechmentorshipplatform.util.ResponseCode;
-import alatoo.edu.edtechmentorshipplatform.services.LearningGoalService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/goals")
+@RequestMapping("/api/v1/goals")
 @RequiredArgsConstructor
-@Tag(name = "LearningGoalController", description = "APIs for managing learning goals and progress tracking")
-public class LearningGoalController extends BaseRestController {
-
-    private final LearningGoalService learningGoalService;
+public class LearningGoalController {
+    private final LearningGoalService service;
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "Create a new learning goal")
-    @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Learning goal created successfully"),
-            @ApiResponse(responseCode = "400", description = "Invalid input")
-    })
-    public ResponseApi<LearningGoalResponseDto> createGoal(
-            @RequestBody @Valid LearningGoalRequestDto dto) {
-        LearningGoalResponseDto result = learningGoalService.createGoal(dto);
-        return new ResponseApi<>(result, ResponseCode.CREATED);
+    @PreAuthorize("hasRole('MENTEE')")
+    public ResponseApi<LearningGoalResponseDto> create(@Valid @RequestBody LearningGoalRequestDto dto) {
+        return new ResponseApi<>(service.createGoal(dto), ResponseCode.CREATED);
     }
 
     @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Update an existing learning goal")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Learning goal updated successfully"),
-            @ApiResponse(responseCode = "400", description = "Invalid input"),
-            @ApiResponse(responseCode = "404", description = "Learning goal not found")
-    })
-    public ResponseApi<LearningGoalResponseDto> updateGoal(
+    @PreAuthorize("hasRole('MENTEE')")
+    public ResponseApi<LearningGoalResponseDto> update(
             @PathVariable Long id,
-            @RequestBody @Valid LearningGoalRequestDto dto) {
-        LearningGoalResponseDto result = learningGoalService.updateGoal(id, dto);
-        return new ResponseApi<>(result, ResponseCode.SUCCESS);
+            @Valid @RequestBody LearningGoalRequestDto dto) {
+        return new ResponseApi<>(service.updateGoal(id, dto), ResponseCode.SUCCESS);
     }
 
-    @PutMapping("/{id}/achieve")
-    @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Mark goal as achieved with feedback")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Learning goal marked as achieved"),
-            @ApiResponse(responseCode = "404", description = "Learning goal not found")
-    })
-    public ResponseApi<LearningGoalResponseDto> markAsAchieved(
+    @PostMapping("/{id}/achieve")
+    @PreAuthorize("hasAnyRole('MENTEE','MENTOR')")
+    public ResponseApi<LearningGoalResponseDto> achieve(
             @PathVariable Long id,
-            @RequestParam String feedback) {
-        LearningGoalResponseDto result = learningGoalService.markAsAchieved(id, feedback);
-        return new ResponseApi<>(result, ResponseCode.SUCCESS);
+            @RequestParam(required = false) String feedback) {
+        return new ResponseApi<>(service.markAsAchieved(id, feedback), ResponseCode.SUCCESS);
+    }
+
+    @PatchMapping("/{id}/progress")
+    @PreAuthorize("hasRole('MENTEE')")
+    public ResponseApi<LearningGoalResponseDto> progress(
+            @PathVariable Long id,
+            @RequestParam Integer percent,
+            @RequestParam(required = false) String notes) {
+        return new ResponseApi<>(service.updateProgress(id, percent, notes), ResponseCode.SUCCESS);
+    }
+
+    @PatchMapping("/{id}/status")
+    @PreAuthorize("hasAnyRole('MENTEE','MENTOR')")
+    public ResponseApi<LearningGoalResponseDto> changeStatus(
+            @PathVariable Long id,
+            @RequestParam GoalStatus status) {
+        return new ResponseApi<>(service.changeStatus(id, status), ResponseCode.SUCCESS);
     }
 
     @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Get goal by ID")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Learning goal retrieved successfully"),
-            @ApiResponse(responseCode = "404", description = "Learning goal not found")
-    })
+    @PreAuthorize("hasAnyRole('MENTEE','MENTOR')")
     public ResponseApi<LearningGoalResponseDto> getById(@PathVariable Long id) {
-        LearningGoalResponseDto result = learningGoalService.getGoalById(id);
-        return new ResponseApi<>(result, ResponseCode.SUCCESS);
+        return new ResponseApi<>(service.getGoalById(id), ResponseCode.SUCCESS);
     }
 
     @GetMapping("/mentee/{menteeId}")
-    @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Get goals by mentee ID")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Learning goals for mentee retrieved successfully")
-    })
-    public ResponseApi<List<LearningGoalResponseDto>> getByMentee(@PathVariable UUID menteeId) {
-        List<LearningGoalResponseDto> result = learningGoalService.getGoalsByMentee(menteeId);
-        return new ResponseApi<>(result, ResponseCode.SUCCESS);
-    }
-
-    @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Get all learning goals")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "All learning goals retrieved successfully")
-    })
-    public ResponseApi<List<LearningGoalResponseDto>> getAll() {
-        List<LearningGoalResponseDto> result = learningGoalService.getAllGoals();
-        return new ResponseApi<>(result, ResponseCode.SUCCESS);
+    @PreAuthorize("hasRole('MENTEE')")
+    public ResponseApi<List<LearningGoalResponseDto>> listByMentee(@PathVariable UUID menteeId) {
+        return new ResponseApi<>(service.getGoalsByMentee(menteeId), ResponseCode.SUCCESS);
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Delete a goal")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Learning goal deleted successfully"),
-            @ApiResponse(responseCode = "404", description = "Learning goal not found")
-    })
-    public ResponseApi<Void> deleteGoal(@PathVariable Long id) {
-        learningGoalService.deleteGoal(id);
+    @PreAuthorize("hasRole('MENTEE')")
+    public ResponseApi<Void> delete(@PathVariable Long id) {
+        service.deleteGoal(id);
         return new ResponseApi<>(null, ResponseCode.SUCCESS);
     }
 }

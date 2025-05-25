@@ -1,7 +1,7 @@
 package alatoo.edu.edtechmentorshipplatform.services.impl;
 
-import alatoo.edu.edtechmentorshipplatform.dto.users.MentorProfileRequestDto;
-import alatoo.edu.edtechmentorshipplatform.dto.users.MentorProfileResponseDto;
+import alatoo.edu.edtechmentorshipplatform.dto.mentor.MentorProfileRequestDto;
+import alatoo.edu.edtechmentorshipplatform.dto.mentor.MentorProfileResponseDto;
 import alatoo.edu.edtechmentorshipplatform.entity.Category;
 import alatoo.edu.edtechmentorshipplatform.entity.MentorProfile;
 import alatoo.edu.edtechmentorshipplatform.entity.User;
@@ -16,8 +16,10 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -61,6 +63,13 @@ public class MentorProfileServiceImpl implements MentorProfileService {
         MentorProfile updated = mentorProfileRepo.save(profile);
 
         return MentorProfileMapper.toDto(updated);
+    }
+
+    @Override
+    public List<MentorProfileResponseDto> getAllMentorProfiles() {
+        return mentorProfileRepo.findAll().stream()
+                .map(MentorProfileMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override

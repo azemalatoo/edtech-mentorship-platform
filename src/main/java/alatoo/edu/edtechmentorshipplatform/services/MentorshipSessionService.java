@@ -1,23 +1,17 @@
 package alatoo.edu.edtechmentorshipplatform.services;
 
-
-import alatoo.edu.edtechmentorshipplatform.dto.session.SessionRequestDto;
-import alatoo.edu.edtechmentorshipplatform.dto.session.SessionResponseDto;
-
+import alatoo.edu.edtechmentorshipplatform.dto.session.BookingRequestDto;
+import alatoo.edu.edtechmentorshipplatform.dto.session.MentorshipSessionResponseDto;
+import alatoo.edu.edtechmentorshipplatform.dto.session.SessionSlotRequestDto;
 import java.util.List;
-import java.util.UUID;
 
 public interface MentorshipSessionService {
-
-    SessionResponseDto createSession(SessionRequestDto createSessionRequestDto);
-
-    SessionResponseDto getSessionById(Long sessionId);
-
-    List<SessionResponseDto> getSessionsByMentor(UUID mentorId);
-
-    List<SessionResponseDto> getSessionsByMentee(UUID menteeId);
-
-    SessionResponseDto updateSessionStatus(Long sessionId, String status);
-
-    void deleteSession(Long sessionId);
+    MentorshipSessionResponseDto createSlot(SessionSlotRequestDto dto);
+    MentorshipSessionResponseDto updateSlot(Long slotId, SessionSlotRequestDto dto);
+    List<MentorshipSessionResponseDto> getSlotsByMentorAndAvailability(java.util.UUID mentorId);
+    MentorshipSessionResponseDto bookSlot(Long slotId, BookingRequestDto dto);
+    MentorshipSessionResponseDto startSession(Long sessionId);
+    MentorshipSessionResponseDto completeSession(Long sessionId);
+    MentorshipSessionResponseDto cancelSession(Long sessionId);
+    List<MentorshipSessionResponseDto> getSessionsByMentee(java.util.UUID menteeId, alatoo.edu.edtechmentorshipplatform.enums.SessionStatus status);
 }

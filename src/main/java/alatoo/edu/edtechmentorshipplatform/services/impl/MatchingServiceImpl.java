@@ -1,6 +1,6 @@
 package alatoo.edu.edtechmentorshipplatform.services.impl;
 
-import alatoo.edu.edtechmentorshipplatform.dto.users.MentorProfileResponseDto;
+import alatoo.edu.edtechmentorshipplatform.dto.mentor.MentorProfileResponseDto;
 import alatoo.edu.edtechmentorshipplatform.entity.MenteeProfile;
 import alatoo.edu.edtechmentorshipplatform.entity.MentorProfile;
 import alatoo.edu.edtechmentorshipplatform.enums.Lang;

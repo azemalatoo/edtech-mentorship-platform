@@ -43,7 +43,6 @@ public class MentorProfile {
     @JoinColumn(name = "expertise_category_id", referencedColumnName = "id")
     private Category expertiseCategory;
 
-    private int totalMentees;
     private double averageRating;
 
     private ProfileStatus profileStatus;

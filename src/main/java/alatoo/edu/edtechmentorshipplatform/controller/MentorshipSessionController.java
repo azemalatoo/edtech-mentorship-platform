@@ -1,97 +1,120 @@
 package alatoo.edu.edtechmentorshipplatform.controller;
 
-import alatoo.edu.edtechmentorshipplatform.controller.base.BaseRestController;
-import alatoo.edu.edtechmentorshipplatform.dto.session.SessionRequestDto;
-import alatoo.edu.edtechmentorshipplatform.dto.session.SessionResponseDto;
+import alatoo.edu.edtechmentorshipplatform.dto.session.BookingRequestDto;
+import alatoo.edu.edtechmentorshipplatform.dto.session.MentorshipSessionResponseDto;
+import alatoo.edu.edtechmentorshipplatform.dto.session.SessionSlotRequestDto;
+import alatoo.edu.edtechmentorshipplatform.enums.SessionStatus;
+import alatoo.edu.edtechmentorshipplatform.services.MentorshipSessionService;
 import alatoo.edu.edtechmentorshipplatform.util.ResponseApi;
 import alatoo.edu.edtechmentorshipplatform.util.ResponseCode;
-import alatoo.edu.edtechmentorshipplatform.services.MentorshipSessionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/mentorship-sessions")
-@RequiredArgsConstructor
+@RequestMapping("/api/v1/sessions")
 @Tag(name = "MentorshipSessionController", description = "APIs for managing mentorship sessions")
-public class MentorshipSessionController extends BaseRestController {
+@RequiredArgsConstructor
+public class MentorshipSessionController {
+    private final MentorshipSessionService sessionService;
 
-    private final MentorshipSessionService mentorshipSessionService;
-
-    @Operation(summary = "Create a new mentorship session", description = "Creates a new session for a mentor and mentee")
-    @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Session created successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad request")
-    })
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseApi<SessionResponseDto> createSession(
-            @Valid @RequestBody SessionRequestDto dto) {
-        SessionResponseDto result = mentorshipSessionService.createSession(dto);
-        return new ResponseApi<>(result, ResponseCode.CREATED);
+    @Operation(summary = "Create a new available slot")
+    @ApiResponse(responseCode = "201", description = "Slot created successfully")
+    @PostMapping("/slots")
+    @PreAuthorize("hasRole('MENTOR')")
+    public ResponseApi<MentorshipSessionResponseDto> createSlot(
+            @Valid @RequestBody SessionSlotRequestDto request) {
+        return new ResponseApi<>(
+                sessionService.createSlot(request),
+                ResponseCode.CREATED
+        );
     }
 
-    @Operation(summary = "Get a mentorship session by ID", description = "Fetches the details of a session by its ID")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Session fetched successfully"),
-            @ApiResponse(responseCode = "404", description = "Session not found")
-    })
-    @GetMapping("/{sessionId}")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseApi<SessionResponseDto> getSessionById(@PathVariable Long sessionId) {
-        SessionResponseDto result = mentorshipSessionService.getSessionById(sessionId);
-        return new ResponseApi<>(result, ResponseCode.SUCCESS);
+    @Operation(summary = "Update an available slot")
+    @ApiResponse(responseCode = "200", description = "Slot updated successfully")
+    @PutMapping("/slots/{slotId}")
+    @PreAuthorize("hasRole('MENTOR')")
+    public ResponseApi<MentorshipSessionResponseDto> updateSlot(
+            @PathVariable Long slotId,
+            @Valid @RequestBody SessionSlotRequestDto request) {
+        return new ResponseApi<>(
+                sessionService.updateSlot(slotId, request),
+                ResponseCode.SUCCESS
+        );
     }
 
-    @Operation(summary = "Get sessions by mentor ID", description = "Fetches all sessions associated with a specific mentor")
-    @ApiResponse(responseCode = "200", description = "Sessions fetched successfully")
-    @GetMapping("/mentor/{mentorId}")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseApi<List<SessionResponseDto>> getSessionsByMentor(@PathVariable UUID mentorId) {
-        List<SessionResponseDto> result = mentorshipSessionService.getSessionsByMentor(mentorId);
-        return new ResponseApi<>(result, ResponseCode.SUCCESS);
+    @Operation(summary = "Get available slots for a mentor")
+    @GetMapping("/slots/mentor/{mentorId}")
+    @PreAuthorize("hasAnyRole('MENTOR','MENTEE')")
+    public ResponseApi<List<MentorshipSessionResponseDto>> getSlotsByMentor(
+            @PathVariable UUID mentorId) {
+        return new ResponseApi<>(
+                sessionService.getSlotsByMentorAndAvailability(mentorId),
+                ResponseCode.SUCCESS
+        );
     }
 
-    @Operation(summary = "Get sessions by mentee ID", description = "Fetches all sessions associated with a specific mentee")
-    @ApiResponse(responseCode = "200", description = "Sessions fetched successfully")
+    @Operation(summary = "Book an available slot")
+    @PostMapping("/{slotId}/book")
+    @PreAuthorize("hasRole('MENTEE')")
+    public ResponseApi<MentorshipSessionResponseDto> bookSlot(
+            @PathVariable Long slotId,
+            @Valid @RequestBody BookingRequestDto request) {
+        return new ResponseApi<>(
+                sessionService.bookSlot(slotId, request),
+                ResponseCode.SUCCESS
+        );
+    }
+
+    @Operation(summary = "Start a booked session")
+    @PostMapping("/{sessionId}/start")
+    @PreAuthorize("hasRole('MENTOR')")
+    public ResponseApi<MentorshipSessionResponseDto> startSession(
+            @PathVariable Long sessionId) {
+        return new ResponseApi<>(
+                sessionService.startSession(sessionId),
+                ResponseCode.SUCCESS
+        );
+    }
+
+    @Operation(summary = "Complete an in-progress session")
+    @PostMapping("/{sessionId}/complete")
+    @PreAuthorize("hasRole('MENTOR')")
+    public ResponseApi<MentorshipSessionResponseDto> completeSession(
+            @PathVariable Long sessionId) {
+        return new ResponseApi<>(
+                sessionService.completeSession(sessionId),
+                ResponseCode.SUCCESS
+        );
+    }
+
+    @Operation(summary = "Cancel a session before it starts")
+    @PostMapping("/{sessionId}/cancel")
+    @PreAuthorize("hasAnyRole('MENTOR','MENTEE')")
+    public ResponseApi<MentorshipSessionResponseDto> cancelSession(
+            @PathVariable Long sessionId) {
+        return new ResponseApi<>(
+                sessionService.cancelSession(sessionId),
+                ResponseCode.SUCCESS
+        );
+    }
+
+    @Operation(summary = "Get sessions for the authenticated mentee by status")
     @GetMapping("/mentee/{menteeId}")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseApi<List<SessionResponseDto>> getSessionsByMentee(@PathVariable UUID menteeId) {
-        List<SessionResponseDto> result = mentorshipSessionService.getSessionsByMentee(menteeId);
-        return new ResponseApi<>(result, ResponseCode.SUCCESS);
-    }
-
-    @Operation(summary = "Update the status of a mentorship session", description = "Updates the session status (e.g., from PENDING to COMPLETED)")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Session status updated successfully"),
-            @ApiResponse(responseCode = "404", description = "Session not found")
-    })
-    @PutMapping("/{sessionId}/status")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseApi<SessionResponseDto> updateSessionStatus(
-            @PathVariable Long sessionId,
-            @RequestParam String status) {
-        SessionResponseDto result = mentorshipSessionService.updateSessionStatus(sessionId, status);
-        return new ResponseApi<>(result, ResponseCode.SUCCESS);
-    }
-
-    @Operation(summary = "Delete a mentorship session", description = "Deletes a mentorship session by its ID")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Session deleted successfully"),
-            @ApiResponse(responseCode = "404", description = "Session not found")
-    })
-    @DeleteMapping("/{sessionId}")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseApi<Void> deleteSession(@PathVariable Long sessionId) {
-        mentorshipSessionService.deleteSession(sessionId);
-        return new ResponseApi<>(null, ResponseCode.SUCCESS);
+    @PreAuthorize("hasRole('MENTEE')")
+    public ResponseApi<List<MentorshipSessionResponseDto>> getSessionsByMentee(
+            @PathVariable UUID menteeId,
+            @RequestParam SessionStatus status) {
+        return new ResponseApi<>(
+                sessionService.getSessionsByMentee(menteeId, status),
+                ResponseCode.SUCCESS
+        );
     }
 }

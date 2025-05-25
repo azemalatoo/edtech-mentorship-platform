@@ -1,7 +1,7 @@
 package alatoo.edu.edtechmentorshipplatform.services.impl;
 
-import alatoo.edu.edtechmentorshipplatform.dto.users.MenteeProfileRequestDto;
-import alatoo.edu.edtechmentorshipplatform.dto.users.MenteeProfileResponseDto;
+import alatoo.edu.edtechmentorshipplatform.dto.mentee.MenteeProfileRequestDto;
+import alatoo.edu.edtechmentorshipplatform.dto.mentee.MenteeProfileResponseDto;
 import alatoo.edu.edtechmentorshipplatform.entity.MenteeProfile;
 import alatoo.edu.edtechmentorshipplatform.entity.User;
 import alatoo.edu.edtechmentorshipplatform.mapper.MenteeProfileMapper;

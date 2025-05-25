@@ -15,7 +15,12 @@ public enum ResponseCode {
 
     NOT_FOUND(3, HttpStatus.NOT_FOUND, "The requested resource was not found"),
 
-    INTERNAL_SERVER_ERROR(4, HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected server error occurred");
+    INTERNAL_SERVER_ERROR(4, HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected server error occurred"),
+
+    VALIDATION_ERROR(5, HttpStatus.BAD_REQUEST, "Validation exception"),
+
+    ACCESS_NOT_ALLOWED(6, HttpStatus.FORBIDDEN, "Access Denied");
+
 
     private final int code;
     private final HttpStatus httpStatus;

@@ -1,15 +1,9 @@
 package alatoo.edu.edtechmentorshipplatform.entity;
 
 import alatoo.edu.edtechmentorshipplatform.enums.MessageStatus;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
-import java.util.UUID;
-
 import jakarta.persistence.*;
+import lombok.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "messages")
@@ -22,27 +16,29 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "conversation_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "conversation_id", nullable = false)
     private Conversation conversation;
 
-    @ManyToOne
-    @JoinColumn(name = "sender_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "sender_id", nullable = false)
     private User sender;
 
-    @ManyToOne
-    @JoinColumn(name = "recipient_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "recipient_id", nullable = false)
     private User recipient;
 
+    @Column(length = 2000)
     private String content;
 
-    private LocalDateTime sentAt = LocalDateTime.now();
+    private String attachmentUrl;
+
+    private LocalDateTime sentAt;
 
     @Enumerated(EnumType.STRING)
     private MessageStatus status;
 
-    private boolean isImportant = false;
+    private boolean isImportant;
 
     private String messageType;
-
 }

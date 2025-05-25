@@ -1,16 +1,12 @@
+// --- src/main/java/alatoo/edu/edtechmentorshipplatform/entity/SessionRecording.java ---
 package alatoo.edu.edtechmentorshipplatform.entity;
 
 import alatoo.edu.edtechmentorshipplatform.enums.AccessLevel;
-import alatoo.edu.edtechmentorshipplatform.enums.StorageProvider;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 @Table(name = "session_recordings")
@@ -23,19 +19,17 @@ public class SessionRecording {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "session_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "session_id", nullable = false)
     private MentorshipSession session;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1000)
     private String recordingUrl;
 
-    private LocalDateTime uploadedAt = LocalDateTime.now();
+    @CreationTimestamp
+    private LocalDateTime uploadedAt;
 
     @Enumerated(EnumType.STRING)
-    private StorageProvider storageProvider;
-
-    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private AccessLevel accessLevel;
-
 }

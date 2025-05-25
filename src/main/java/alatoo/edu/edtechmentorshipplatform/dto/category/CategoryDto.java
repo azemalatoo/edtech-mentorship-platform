@@ -1,5 +1,6 @@
 package alatoo.edu.edtechmentorshipplatform.dto.category;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 
@@ -10,6 +11,7 @@ import lombok.*;
 @Builder
 public class CategoryDto {
     private Long id;
+    @NotBlank(message = "Name is required")
     private String name;
     private String description;
 }

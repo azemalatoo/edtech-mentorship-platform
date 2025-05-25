@@ -1,8 +1,7 @@
 package alatoo.edu.edtechmentorshipplatform.controller;
 
-import alatoo.edu.edtechmentorshipplatform.controller.base.BaseRestController;
-import alatoo.edu.edtechmentorshipplatform.dto.users.MentorProfileRequestDto;
-import alatoo.edu.edtechmentorshipplatform.dto.users.MentorProfileResponseDto;
+import alatoo.edu.edtechmentorshipplatform.dto.mentor.MentorProfileRequestDto;
+import alatoo.edu.edtechmentorshipplatform.dto.mentor.MentorProfileResponseDto;
 import alatoo.edu.edtechmentorshipplatform.services.MentorProfileService;
 import alatoo.edu.edtechmentorshipplatform.util.ResponseApi;
 import alatoo.edu.edtechmentorshipplatform.util.ResponseCode;
@@ -16,13 +15,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/mentor-profile")
 @RequiredArgsConstructor
 @Tag(name = "MenteeProfileController", description = "APIs for managing mentor profiles")
-public class MentorProfileController extends BaseRestController {
+public class MentorProfileController{
 
     private final MentorProfileService mentorProfileService;
 
@@ -104,5 +104,13 @@ public class MentorProfileController extends BaseRestController {
             @Parameter(description = "Mentor Profile ID") @PathVariable UUID id) {
         MentorProfileResponseDto result = mentorProfileService.approveMentorProfile(id);
         return new ResponseApi<>(result, ResponseCode.SUCCESS);
+    }
+
+    @Operation(summary = "Get all mentor profiles")
+    @ApiResponse(responseCode = "200", description = "Mentor profiles retrieved successfully")
+    @GetMapping
+    public ResponseApi<List<MentorProfileResponseDto>> getAllMentorProfiles() {
+        List<MentorProfileResponseDto> profiles = mentorProfileService.getAllMentorProfiles();
+        return new ResponseApi<>(profiles, ResponseCode.SUCCESS);
     }
 }

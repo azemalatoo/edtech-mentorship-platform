@@ -1,96 +1,118 @@
 package alatoo.edu.edtechmentorshipplatform.services.impl;
 
-import alatoo.edu.edtechmentorshipplatform.dto.session.SessionRequestDto;
-import alatoo.edu.edtechmentorshipplatform.dto.session.SessionResponseDto;
+import alatoo.edu.edtechmentorshipplatform.dto.session.BookingRequestDto;
+import alatoo.edu.edtechmentorshipplatform.dto.session.MentorshipSessionResponseDto;
+import alatoo.edu.edtechmentorshipplatform.dto.session.SessionSlotRequestDto;
 import alatoo.edu.edtechmentorshipplatform.entity.MentorshipSession;
-import alatoo.edu.edtechmentorshipplatform.entity.TutoringPackage;
 import alatoo.edu.edtechmentorshipplatform.entity.User;
 import alatoo.edu.edtechmentorshipplatform.enums.SessionStatus;
+import alatoo.edu.edtechmentorshipplatform.exception.NotFoundException;
+import alatoo.edu.edtechmentorshipplatform.exception.EntityInUseException;
 import alatoo.edu.edtechmentorshipplatform.mapper.MentorshipSessionMapper;
 import alatoo.edu.edtechmentorshipplatform.repo.MentorshipSessionRepo;
-import alatoo.edu.edtechmentorshipplatform.repo.TutoringPackageRepo;
-import alatoo.edu.edtechmentorshipplatform.repo.UserRepo;
 import alatoo.edu.edtechmentorshipplatform.services.MentorshipSessionService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
+@Transactional
 public class MentorshipSessionServiceImpl implements MentorshipSessionService {
+    private final MentorshipSessionRepo repo;
+    private final MentorshipSessionMapper mapper;
 
-    private final MentorshipSessionRepo mentorshipSessionRepository;
-    private final UserRepo userRepository;
-    private final TutoringPackageRepo tutoringPackageRepository;
-
-    @Autowired
-    public MentorshipSessionServiceImpl(MentorshipSessionRepo mentorshipSessionRepository,
-                                        UserRepo userRepository,
-                                        TutoringPackageRepo tutoringPackageRepository) {
-        this.mentorshipSessionRepository = mentorshipSessionRepository;
-        this.userRepository = userRepository;
-        this.tutoringPackageRepository = tutoringPackageRepository;
+    private User getCurrentUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return ((alatoo.edu.edtechmentorshipplatform.security.UserDetailsImpl)auth.getPrincipal()).getUser();
     }
 
     @Override
-    public SessionResponseDto createSession(SessionRequestDto createSessionRequestDto) {
-        User mentor = userRepository.findById(createSessionRequestDto.getMentorId())
-                .orElseThrow(() -> new RuntimeException("Mentor not found"));
-        User mentee = userRepository.findById(createSessionRequestDto.getMenteeId())
-                .orElseThrow(() -> new RuntimeException("Mentee not found"));
-        TutoringPackage tutoringPackage = tutoringPackageRepository.findById(createSessionRequestDto.getTutoringPackageId())
-                .orElseThrow(() -> new RuntimeException("Tutoring package not found"));
-
-        MentorshipSession session = MentorshipSession.builder()
-                .mentor(mentor)
-                .mentee(mentee)
-                .scheduledAt(createSessionRequestDto.getScheduledAt())
-                .status(SessionStatus.SCHEDULED)
-                .notes(createSessionRequestDto.getNotes())
-                .tutoringPackage(tutoringPackage)
-                .isCompleted(false)
-                .build();
-
-        MentorshipSession savedSession = mentorshipSessionRepository.save(session);
-        return MentorshipSessionMapper.toDto(savedSession);
+    public MentorshipSessionResponseDto createSlot(SessionSlotRequestDto dto) {
+        User mentor = getCurrentUser();
+        MentorshipSession slot = mapper.toSlotEntity(dto, mentor);
+        return mapper.toDto(repo.save(slot));
     }
 
     @Override
-    public SessionResponseDto getSessionById(Long sessionId) {
-        MentorshipSession session = mentorshipSessionRepository.findById(sessionId)
-                .orElseThrow(() -> new RuntimeException("Session not found"));
-        return MentorshipSessionMapper.toDto(session);
+    public MentorshipSessionResponseDto updateSlot(Long slotId, SessionSlotRequestDto dto) {
+        MentorshipSession slot = repo.findById(slotId)
+                .orElseThrow(() -> new NotFoundException("Slot not found with id " + slotId));
+        User current = getCurrentUser();
+        if (!slot.getMentor().getId().equals(current.getId())) {
+            throw new EntityInUseException("Not the owner of this slot");
+        }
+        if (slot.getStatus() != SessionStatus.AVAILABLE) {
+            throw new EntityInUseException("Only available slots can be updated");
+        }
+        slot.setAvailableFrom(dto.getAvailableFrom());
+        slot.setAvailableTo(dto.getAvailableTo());
+        return mapper.toDto(repo.save(slot));
     }
 
     @Override
-    public List<SessionResponseDto> getSessionsByMentor(UUID mentorId) {
-        List<MentorshipSession> sessions = mentorshipSessionRepository.findByMentorId(mentorId);
-        return sessions.stream()
-                .map(MentorshipSessionMapper::toDto)
-                .collect(Collectors.toList());
+    public List<MentorshipSessionResponseDto> getSlotsByMentorAndAvailability(UUID mentorId) {
+        return repo.findByMentorIdAndAvailableFromBetween(mentorId, LocalDateTime.now(), LocalDateTime.MAX)
+                .stream().map(mapper::toDto).collect(Collectors.toList());
     }
 
     @Override
-    public List<SessionResponseDto> getSessionsByMentee(UUID menteeId) {
-        List<MentorshipSession> sessions = mentorshipSessionRepository.findByMenteeId(menteeId);
-        return sessions.stream()
-                .map(MentorshipSessionMapper::toDto)
-                .collect(Collectors.toList());
+    public MentorshipSessionResponseDto bookSlot(Long slotId, BookingRequestDto dto) {
+        MentorshipSession slot = repo.findById(slotId)
+                .orElseThrow(() -> new NotFoundException("Slot not found with id " + slotId));
+        if (slot.getStatus() != SessionStatus.AVAILABLE) throw new EntityInUseException("Slot not available");
+        User mentee = getCurrentUser();
+        slot.setMentee(mentee);
+        slot.setStatus(SessionStatus.BOOKED);
+        slot.setProviderType(dto.getProviderType());
+        slot.setMeetingLink(dto.getMeetingLink());
+        return mapper.toDto(repo.save(slot));
     }
 
     @Override
-    public SessionResponseDto updateSessionStatus(Long sessionId, String status) {
-        MentorshipSession session = mentorshipSessionRepository.findById(sessionId)
-                .orElseThrow(() -> new RuntimeException("Session not found"));
-        session.setStatus(SessionStatus.valueOf(status));
-        MentorshipSession updatedSession = mentorshipSessionRepository.save(session);
-        return MentorshipSessionMapper.toDto(updatedSession);
+    public MentorshipSessionResponseDto startSession(Long sessionId) {
+        MentorshipSession s = repo.findById(sessionId)
+                .orElseThrow(() -> new NotFoundException("Session not found with id " + sessionId));
+        if (!getCurrentUser().getId().equals(s.getMentor().getId())) throw new EntityInUseException("Not mentor of this session");
+        if (s.getStatus() != SessionStatus.BOOKED) throw new EntityInUseException("Session not booked");
+        s.setStartedAt(LocalDateTime.now());
+        s.setStatus(SessionStatus.IN_PROGRESS);
+        return mapper.toDto(repo.save(s));
     }
 
     @Override
-    public void deleteSession(Long sessionId) {
-        mentorshipSessionRepository.deleteById(sessionId);
+    public MentorshipSessionResponseDto completeSession(Long sessionId) {
+        MentorshipSession s = repo.findById(sessionId)
+                .orElseThrow(() -> new NotFoundException("Session not found with id " + sessionId));
+        if (!getCurrentUser().getId().equals(s.getMentor().getId())) throw new EntityInUseException("Not mentor of this session");
+        if (s.getStatus() != SessionStatus.IN_PROGRESS) throw new EntityInUseException("Session not in progress");
+        s.setEndedAt(LocalDateTime.now());
+        s.setStatus(SessionStatus.COMPLETED);
+        return mapper.toDto(repo.save(s));
+    }
+
+    @Override
+    public MentorshipSessionResponseDto cancelSession(Long sessionId) {
+        MentorshipSession s = repo.findById(sessionId)
+                .orElseThrow(() -> new NotFoundException("Session not found with id " + sessionId));
+        if (s.getStatus() == SessionStatus.IN_PROGRESS || s.getStatus() == SessionStatus.COMPLETED)
+            throw new EntityInUseException("Cannot cancel after start");
+        User u = getCurrentUser();
+        if (!u.getId().equals(s.getMentor().getId()) && (s.getMentee()==null || !u.getId().equals(s.getMentee().getId())))
+            throw new EntityInUseException("Not participant");
+        s.setStatus(SessionStatus.CANCELLED);
+        return mapper.toDto(repo.save(s));
+    }
+
+    @Override
+    public List<MentorshipSessionResponseDto> getSessionsByMentee(UUID menteeId, alatoo.edu.edtechmentorshipplatform.enums.SessionStatus status) {
+        return repo.findByMenteeIdAndStatus(menteeId, status)
+                .stream().map(mapper::toDto).collect(Collectors.toList());
     }
 }

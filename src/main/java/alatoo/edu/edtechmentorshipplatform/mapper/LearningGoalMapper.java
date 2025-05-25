@@ -4,33 +4,40 @@ import alatoo.edu.edtechmentorshipplatform.dto.learningGoal.LearningGoalRequestD
 import alatoo.edu.edtechmentorshipplatform.dto.learningGoal.LearningGoalResponseDto;
 import alatoo.edu.edtechmentorshipplatform.entity.LearningGoal;
 import alatoo.edu.edtechmentorshipplatform.entity.User;
+import alatoo.edu.edtechmentorshipplatform.enums.GoalStatus;
+import org.springframework.stereotype.Component;
 
+@Component
 public class LearningGoalMapper {
-
-    public static LearningGoal toEntity(LearningGoalRequestDto dto, User mentee, User mentor) {
+    public LearningGoal toEntity(LearningGoalRequestDto dto, User mentee, User mentor) {
         return LearningGoal.builder()
-                .goalTitle(dto.getGoalTitle())
-                .description(dto.getDescription())
                 .mentee(mentee)
                 .mentor(mentor)
-                .status(dto.getStatus())
-                .isAchieved(dto.getIsAchieved())
+                .goalTitle(dto.getGoalTitle())
+                .description(dto.getDescription())
+                .targetDate(dto.getTargetDate())
+                .progressPercentage(dto.getProgressPercentage() != null ? dto.getProgressPercentage() : 0)
+                .progressNotes(dto.getProgressNotes())
+                .status(dto.getStatus() != null ? dto.getStatus() : GoalStatus.IN_PROGRESS)
+                .feedback(dto.getFeedback())
                 .build();
     }
 
-    public static LearningGoalResponseDto toDto(LearningGoal goal) {
-        LearningGoalResponseDto dto = new LearningGoalResponseDto();
-        dto.setId(goal.getId());
-        dto.setGoalTitle(goal.getGoalTitle());
-        dto.setDescription(goal.getDescription());
-        dto.setIsAchieved(goal.getIsAchieved());
-        dto.setCreatedAt(goal.getCreatedAt());
-        dto.setAchievedAt(goal.getAchievedAt());
-        dto.setMenteeId(goal.getMentee().getId());
-        if (goal.getMentor() != null)
-            dto.setMentorId(goal.getMentor().getId());
-        dto.setFeedback(goal.getFeedback());
-        dto.setStatus(goal.getStatus());
-        return dto;
+    public LearningGoalResponseDto toDto(LearningGoal entity) {
+        return LearningGoalResponseDto.builder()
+                .id(entity.getId())
+                .menteeId(entity.getMentee().getId())
+                .mentorId(entity.getMentor() != null ? entity.getMentor().getId() : null)
+                .goalTitle(entity.getGoalTitle())
+                .description(entity.getDescription())
+                .isAchieved(entity.getIsAchieved())
+                .createdAt(entity.getCreatedAt())
+                .achievedAt(entity.getAchievedAt())
+                .targetDate(entity.getTargetDate())
+                .progressPercentage(entity.getProgressPercentage())
+                .progressNotes(entity.getProgressNotes())
+                .status(entity.getStatus())
+                .feedback(entity.getFeedback())
+                .build();
     }
 }

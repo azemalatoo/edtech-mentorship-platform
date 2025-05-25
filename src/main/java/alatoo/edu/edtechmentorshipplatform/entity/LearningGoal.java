@@ -1,14 +1,11 @@
 package alatoo.edu.edtechmentorshipplatform.entity;
 
 import alatoo.edu.edtechmentorshipplatform.enums.GoalStatus;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import jakarta.persistence.*;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -22,15 +19,18 @@ public class LearningGoal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "mentee_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "mentee_id", nullable = false)
     private User mentee;
 
+    @Column(nullable = false)
     private String goalTitle;
 
+    @Column(length = 2000)
     private String description;
 
-    private Boolean isAchieved;
+    @Column(nullable = false)
+    private Boolean isAchieved = false;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -38,11 +38,18 @@ public class LearningGoal {
     private LocalDateTime achievedAt;
 
     @ManyToOne
-    @JoinColumn(name = "mentor_id", referencedColumnName = "id", nullable = true)
+    @JoinColumn(name = "mentor_id")
     private User mentor;
 
+    @Column(length = 2000)
     private String feedback;
 
     @Column(nullable = false)
-    private GoalStatus status;
+    @Enumerated(EnumType.STRING)
+    private GoalStatus status = GoalStatus.PENDING;
+
+    private LocalDate targetDate;
+    private Integer progressPercentage = 0;
+    @Column(length = 2000)
+    private String progressNotes;
 }

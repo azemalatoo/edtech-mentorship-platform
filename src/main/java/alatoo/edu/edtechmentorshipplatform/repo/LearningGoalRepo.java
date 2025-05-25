@@ -9,5 +9,5 @@ import java.util.UUID;
 
 @Repository
 public interface LearningGoalRepo extends JpaRepository<LearningGoal, Long> {
-    List<LearningGoal> findByMenteeId(UUID menteeId);
+    List<LearningGoal> findByMentee_Id(UUID menteeId);
 }

@@ -1,15 +1,10 @@
 package alatoo.edu.edtechmentorshipplatform.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import jakarta.persistence.*;
+import lombok.*;
+import alatoo.edu.edtechmentorshipplatform.enums.SessionProviderType;
 import alatoo.edu.edtechmentorshipplatform.enums.SessionStatus;
-
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 @Table(name = "mentorship_sessions")
@@ -22,27 +17,28 @@ public class MentorshipSession {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "mentor_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "mentor_id", nullable = false)
     private User mentor;
 
     @ManyToOne
-    @JoinColumn(name = "mentee_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "mentee_id")
     private User mentee;
 
-    private LocalDateTime scheduledAt;
+    private LocalDateTime availableFrom;
+    private LocalDateTime availableTo;
+
     private LocalDateTime startedAt;
     private LocalDateTime endedAt;
 
     @Enumerated(EnumType.STRING)
     private SessionStatus status;
 
+    @Enumerated(EnumType.STRING)
+    private SessionProviderType providerType;
+
+    private String meetingLink;
+
     @Column(length = 1000)
     private String notes;
-
-    private boolean isCompleted;
-
-    @ManyToOne
-    @JoinColumn(name = "package_id", referencedColumnName = "id")
-    private TutoringPackage tutoringPackage;
 }

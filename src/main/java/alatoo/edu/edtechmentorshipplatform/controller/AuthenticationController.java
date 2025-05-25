@@ -1,6 +1,5 @@
 package alatoo.edu.edtechmentorshipplatform.controller;
 
-import alatoo.edu.edtechmentorshipplatform.controller.base.BaseRestController;
 import alatoo.edu.edtechmentorshipplatform.dto.auth.LoginRequest;
 import alatoo.edu.edtechmentorshipplatform.dto.auth.LoginResponse;
 import alatoo.edu.edtechmentorshipplatform.dto.auth.RegisterRequest;
@@ -15,14 +14,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
 @Tag(name = "AuthenticationController", description = "APIs for user authentication")
 @RequiredArgsConstructor
-public class AuthenticationController extends BaseRestController{
+public class AuthenticationController{
 
     private final UserAuthService authService;
 
@@ -32,12 +30,11 @@ public class AuthenticationController extends BaseRestController{
             @ApiResponse(responseCode = "400", description = "Invalid user input")
     })
     @PostMapping("/register")
-    @ResponseStatus(HttpStatus.CREATED)
     public ResponseApi<RegisterResponse> register(
             @Parameter(description = "User registration request details")
             @Valid @RequestBody RegisterRequest request) {
         RegisterResponse registeredUser = authService.register(request);
-        return new ResponseApi<>(registeredUser, ResponseCode.CREATED);
+        return new ResponseApi<>(registeredUser, ResponseCode.SUCCESS);
     }
 
     @Operation(summary = "Login with credentials")
@@ -46,7 +43,6 @@ public class AuthenticationController extends BaseRestController{
             @ApiResponse(responseCode = "401", description = "Invalid username or password")
     })
     @PostMapping("/login")
-    @ResponseStatus(HttpStatus.OK)
     public ResponseApi<LoginResponse> login(
             @Parameter(description = "User login request with username and password")
             @Valid @RequestBody LoginRequest request) {

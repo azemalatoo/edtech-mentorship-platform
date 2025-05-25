@@ -31,9 +31,6 @@ public class Conversation {
     @JoinColumn(name = "mentee_id", referencedColumnName = "id", nullable = false)
     private User mentee;
 
-    @Column(nullable = false)
-    private String conversationType;
-
     @CreationTimestamp
     private LocalDateTime createdAt;
 

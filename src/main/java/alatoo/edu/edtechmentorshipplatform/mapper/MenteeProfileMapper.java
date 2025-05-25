@@ -1,6 +1,6 @@
 package alatoo.edu.edtechmentorshipplatform.mapper;
 
-import alatoo.edu.edtechmentorshipplatform.dto.users.MenteeProfileResponseDto;
+import alatoo.edu.edtechmentorshipplatform.dto.mentee.MenteeProfileResponseDto;
 import alatoo.edu.edtechmentorshipplatform.entity.MenteeProfile;
 import alatoo.edu.edtechmentorshipplatform.entity.User;
 

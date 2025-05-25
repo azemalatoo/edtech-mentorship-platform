@@ -2,9 +2,6 @@ package alatoo.edu.edtechmentorshipplatform.enums;
 
 import java.util.Arrays;
 
-/**
- * Represents different levels of content visibility and access within the platform.
- */
 public enum AccessLevel {
 
     PRIVATE("Visible only to the owner"),

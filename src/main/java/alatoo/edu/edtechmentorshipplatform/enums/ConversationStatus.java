@@ -1,37 +1,13 @@
 package alatoo.edu.edtechmentorshipplatform.enums;
 
-import java.util.Arrays;
-
 /**
- * Represents the status of a conversation between users on the mentorship platform.
+ * Status of a conversation thread.
  */
 public enum ConversationStatus {
-
-    ACTIVE("Conversation is ongoing"),
-    ARCHIVED("Conversation is archived but not deleted"),
-    CLOSED("Conversation is closed and cannot be continued");
-
-    private final String description;
-
-    ConversationStatus(String description) {
-        this.description = description;
-    }
-
-
-    public String getDescription() {
-        return description;
-    }
-
-
-    public static ConversationStatus fromValue(String value) {
-        return Arrays.stream(ConversationStatus.values())
-                .filter(status -> status.name().equalsIgnoreCase(value))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Unknown conversation status: " + value));
-    }
-
-    @Override
-    public String toString() {
-        return name() + " (" + description + ")";
-    }
+    /** New conversation, open for messaging. */
+    OPEN,
+    /** Conversation has been closed by a participant. No new messages allowed. */
+    CLOSED,
+    /** Conversation has been archived (e.g., after inactivity). */
+    ARCHIVED
 }

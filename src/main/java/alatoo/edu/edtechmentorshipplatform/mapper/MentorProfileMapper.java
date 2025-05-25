@@ -1,11 +1,13 @@
 package alatoo.edu.edtechmentorshipplatform.mapper;
 
-import alatoo.edu.edtechmentorshipplatform.dto.users.MentorProfileRequestDto;
-import alatoo.edu.edtechmentorshipplatform.dto.users.MentorProfileResponseDto;
+import alatoo.edu.edtechmentorshipplatform.dto.mentor.MentorProfileRequestDto;
+import alatoo.edu.edtechmentorshipplatform.dto.mentor.MentorProfileResponseDto;
 import alatoo.edu.edtechmentorshipplatform.entity.Category;
 import alatoo.edu.edtechmentorshipplatform.entity.MentorProfile;
 import alatoo.edu.edtechmentorshipplatform.entity.User;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
 public class MentorProfileMapper {
 
     public static MentorProfile toEntity(MentorProfileRequestDto dto, User user, Category category) {
@@ -18,7 +20,6 @@ public class MentorProfileMapper {
                 .certifications(dto.getCertifications())
                 .languages(dto.getLanguages())
                 .expertiseCategory(category)
-                .totalMentees(dto.getTotalMentees())
                 .averageRating(dto.getAverageRating())
                 .build();
     }
@@ -33,7 +34,6 @@ public class MentorProfileMapper {
         dto.setCertifications(mentorProfile.getCertifications());
         dto.setLanguages(mentorProfile.getLanguages());
         dto.setExpertiseCategory(CategoryMapper.toDto(mentorProfile.getExpertiseCategory()));
-        dto.setTotalMentees(mentorProfile.getTotalMentees());
         dto.setAverageRating(mentorProfile.getAverageRating());
         return dto;
     }

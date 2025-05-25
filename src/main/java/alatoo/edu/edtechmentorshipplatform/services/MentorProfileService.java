@@ -1,9 +1,10 @@
 package alatoo.edu.edtechmentorshipplatform.services;
 
 
-import alatoo.edu.edtechmentorshipplatform.dto.users.MentorProfileRequestDto;
-import alatoo.edu.edtechmentorshipplatform.dto.users.MentorProfileResponseDto;
+import alatoo.edu.edtechmentorshipplatform.dto.mentor.MentorProfileRequestDto;
+import alatoo.edu.edtechmentorshipplatform.dto.mentor.MentorProfileResponseDto;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface MentorProfileService {
@@ -13,4 +14,5 @@ public interface MentorProfileService {
     MentorProfileResponseDto getProfileById(UUID profileId);
     void deleteMentorProfile(UUID id);
     MentorProfileResponseDto approveMentorProfile(UUID profileId);
+    List<MentorProfileResponseDto> getAllMentorProfiles();
 }

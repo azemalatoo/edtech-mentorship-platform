@@ -1,53 +1,49 @@
 package alatoo.edu.edtechmentorshipplatform.controller;
 
-import alatoo.edu.edtechmentorshipplatform.controller.base.BaseRestController;
 import alatoo.edu.edtechmentorshipplatform.dto.review.ReviewRequestDto;
 import alatoo.edu.edtechmentorshipplatform.dto.review.ReviewResponseDto;
+import alatoo.edu.edtechmentorshipplatform.services.ReviewService;
 import alatoo.edu.edtechmentorshipplatform.util.ResponseApi;
 import alatoo.edu.edtechmentorshipplatform.util.ResponseCode;
-import alatoo.edu.edtechmentorshipplatform.services.ReviewService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
 
-@RestController
-@RequestMapping("/reviews")
-@RequiredArgsConstructor
-@Tag(name = "Review Controller", description = "APIs for rating and feedback after sessions")
-public class ReviewController extends BaseRestController {
 
+@RestController
+@RequestMapping("/api/v1/reviews")
+@RequiredArgsConstructor
+public class ReviewController {
     private final ReviewService reviewService;
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "Leave a review for a session")
-    public ResponseApi<ReviewResponseDto> leaveReview(
-            @Valid @RequestBody ReviewRequestDto dto) {
-        ReviewResponseDto result = reviewService.leaveReview(dto);
-        return new ResponseApi<>(result, ResponseCode.CREATED);
+    @PreAuthorize("hasAnyRole('MENTOR','MENTEE')")
+    public ResponseApi<ReviewResponseDto> submitReview(
+            @Valid @RequestBody ReviewRequestDto request) {
+        return new ResponseApi<>(
+                reviewService.submitReview(request),
+                ResponseCode.CREATED
+        );
     }
 
-    @GetMapping("/reviewee/{userId}")
-    @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Get all reviews for a user")
-    public ResponseApi<List<ReviewResponseDto>> getReviewsForUser(
-            @PathVariable UUID userId) {
-        List<ReviewResponseDto> result = reviewService.getReviewsForUser(userId);
-        return new ResponseApi<>(result, ResponseCode.SUCCESS);
+    @GetMapping
+    @PreAuthorize("hasAnyRole('MENTOR','MENTEE')")
+    public ResponseApi<List<ReviewResponseDto>> getReviews(
+            @RequestParam UUID revieweeId) {
+        return new ResponseApi<>(
+                reviewService.getReviewsForUser(revieweeId),
+                ResponseCode.SUCCESS
+        );
     }
 
-    @GetMapping("/reviewer/{reviewerId}")
-    @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Get all reviews made by a reviewer")
-    public ResponseApi<List<ReviewResponseDto>> getReviewsByReviewer(
-            @PathVariable UUID reviewerId) {
-        List<ReviewResponseDto> result = reviewService.getReviewsByReviewer(reviewerId);
-        return new ResponseApi<>(result, ResponseCode.SUCCESS);
+    @DeleteMapping("/{reviewId}")
+    @PreAuthorize("hasAnyRole('MENTOR','MENTEE')")
+    public ResponseApi<Void> deleteReview(@PathVariable Long reviewId) {
+        reviewService.deleteReview(reviewId);
+        return new ResponseApi<>(null, ResponseCode.SUCCESS);
     }
 }

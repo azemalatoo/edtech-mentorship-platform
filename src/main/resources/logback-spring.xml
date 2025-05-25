@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- Base directory for all log files -->
+    <property name="LOG_DIR" value="logs"/>
+
+    <!-- Common log pattern -->
+    <property name="FILE_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
+
+    <!-- Console appender -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${FILE_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Rolling file appender -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- this is your main log file -->
+        <file>${LOG_DIR}/mentor-connect.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover every day into a gzipped archive -->
+            <fileNamePattern>${LOG_DIR}/archive/mentor-connect.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+            <!-- keep 30 days of history -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${FILE_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Root logger: send to both console and file -->
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
+    </root>
+
+    <!-- Lower verbosity for Spring MVC -->
+    <logger name="org.springframework.web" level="WARN"/>
+
+    <!-- Enable debug for your application packages -->
+    <logger name="alatoo.edu.edtechmentorshipplatform" level="DEBUG"/>
+
+</configuration>

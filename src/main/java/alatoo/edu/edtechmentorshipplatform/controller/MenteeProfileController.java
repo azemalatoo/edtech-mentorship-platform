@@ -1,8 +1,7 @@
 package alatoo.edu.edtechmentorshipplatform.controller;
 
-import alatoo.edu.edtechmentorshipplatform.controller.base.BaseRestController;
-import alatoo.edu.edtechmentorshipplatform.dto.users.MenteeProfileRequestDto;
-import alatoo.edu.edtechmentorshipplatform.dto.users.MenteeProfileResponseDto;
+import alatoo.edu.edtechmentorshipplatform.dto.mentee.MenteeProfileRequestDto;
+import alatoo.edu.edtechmentorshipplatform.dto.mentee.MenteeProfileResponseDto;
 import alatoo.edu.edtechmentorshipplatform.util.ResponseApi;
 import alatoo.edu.edtechmentorshipplatform.util.ResponseCode;
 import alatoo.edu.edtechmentorshipplatform.services.MenteeProfileService;
@@ -22,7 +21,7 @@ import java.util.UUID;
 @RequestMapping("/mentee-profiles")
 @RequiredArgsConstructor
 @Tag(name = "MenteeProfileController", description = "APIs for managing mentee profiles")
-public class MenteeProfileController extends BaseRestController {
+public class MenteeProfileController {
 
     private final MenteeProfileService menteeProfileService;
 
@@ -85,4 +84,6 @@ public class MenteeProfileController extends BaseRestController {
         menteeProfileService.deleteProfile(profileId);
         return new ResponseApi<>(null, ResponseCode.SUCCESS);
     }
+
+
 }
