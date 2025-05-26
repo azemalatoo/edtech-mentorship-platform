@@ -2,6 +2,7 @@ package alatoo.edu.edtechmentorshipplatform.exception;
 
 import alatoo.edu.edtechmentorshipplatform.util.ResponseApi;
 import alatoo.edu.edtechmentorshipplatform.util.ResponseCode;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,8 +13,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-
-import java.nio.file.AccessDeniedException;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
@@ -81,11 +80,23 @@ public class GlobalExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    @ExceptionHandler(AccessDeniedException.class)
-    public ResponseApi<Void> handleAccessDenied(AccessDeniedException ex) {
+    @ExceptionHandler(org.springframework.security.access.AccessDeniedException.class)
+    public ResponseApi<Void> handleAccessDenied(org.springframework.security.access.AccessDeniedException ex) {
         log.debug("Access denied: {}", ex.getMessage());
-        return new ResponseApi<>(null, ResponseCode.ACCESS_NOT_ALLOWED, "You do not have permission to perform this action");
+        return new ResponseApi<>(null,
+                ResponseCode.ACCESS_NOT_ALLOWED,
+                "You do not have permission to perform this action");
     }
 
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseApi<Void> handleExpiredJwt(ExpiredJwtException ex) {
+        log.debug("JWT expired: {}", ex.getMessage());
+        return new ResponseApi<>(
+                null,
+                ResponseCode.UNAUTHORIZED,
+                "Your session has expired. Please log in again."
+        );
+    }
 
 }

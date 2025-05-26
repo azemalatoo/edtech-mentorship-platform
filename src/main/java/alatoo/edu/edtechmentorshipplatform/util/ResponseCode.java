@@ -19,7 +19,9 @@ public enum ResponseCode {
 
     VALIDATION_ERROR(5, HttpStatus.BAD_REQUEST, "Validation exception"),
 
-    ACCESS_NOT_ALLOWED(6, HttpStatus.FORBIDDEN, "Access Denied");
+    ACCESS_NOT_ALLOWED(6, HttpStatus.FORBIDDEN, "Access Denied"),
+
+    UNAUTHORIZED(7, HttpStatus.UNAUTHORIZED, "Unauthorized");
 
 
     private final int code;

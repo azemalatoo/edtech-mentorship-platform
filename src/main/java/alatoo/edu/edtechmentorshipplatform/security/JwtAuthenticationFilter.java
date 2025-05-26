@@ -1,9 +1,11 @@
 package alatoo.edu.edtechmentorshipplatform.security;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,16 +18,21 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.io.IOException;
 
+@Slf4j
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtTokenProvider jwtService;
     private final CustomUserDetailsService userDetailsService;
+    private final HandlerExceptionResolver handlerExceptionResolver;
+
 
     public JwtAuthenticationFilter(
             JwtTokenProvider jwtService,
-            CustomUserDetailsService userDetailsService) {
+            CustomUserDetailsService userDetailsService,
+            HandlerExceptionResolver handlerExceptionResolver) {
         this.jwtService = jwtService;
         this.userDetailsService = userDetailsService;
+        this.handlerExceptionResolver = handlerExceptionResolver;
     }
 
     @Override
@@ -71,10 +78,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
 
             filterChain.doFilter(request, response);
-        } catch (Exception exception) {
-            logger.error("Error occurred in JWT authentication filter ", exception);
-            response.getWriter().write("Authentication Error");
-            response.getWriter().flush();
+        } catch (ExpiredJwtException ex) {
+            handlerExceptionResolver.resolveException(request, response, null, ex);
+        } catch (Exception ex) {
+            log.error("doFilterInternal() ", ex);
+            handlerExceptionResolver.resolveException(request, response, null, ex);
         }
     }
 }
