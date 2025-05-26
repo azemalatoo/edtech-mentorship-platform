@@ -1,6 +1,5 @@
 package alatoo.edu.edtechmentorshipplatform.controller;
 
-import alatoo.edu.edtechmentorshipplatform.dto.session.BookingRequestDto;
 import alatoo.edu.edtechmentorshipplatform.dto.session.MentorshipSessionResponseDto;
 import alatoo.edu.edtechmentorshipplatform.dto.session.SessionSlotRequestDto;
 import alatoo.edu.edtechmentorshipplatform.enums.SessionStatus;
@@ -53,10 +52,11 @@ public class MentorshipSessionController {
     @Operation(summary = "Get available slots for a mentor")
     @GetMapping("/slots/mentor/{mentorId}")
     @PreAuthorize("hasAnyRole('MENTOR','MENTEE')")
-    public ResponseApi<List<MentorshipSessionResponseDto>> getSlotsByMentor(
-            @PathVariable UUID mentorId) {
+    public ResponseApi<List<MentorshipSessionResponseDto>> getSlotsByMentorAndStatus(
+            @PathVariable UUID mentorId,
+            @RequestParam SessionStatus status) {
         return new ResponseApi<>(
-                sessionService.getSlotsByMentorAndAvailability(mentorId),
+                sessionService.getSlotsByMentorAndStatus(mentorId, status),
                 ResponseCode.SUCCESS
         );
     }
@@ -65,10 +65,9 @@ public class MentorshipSessionController {
     @PostMapping("/{slotId}/book")
     @PreAuthorize("hasRole('MENTEE')")
     public ResponseApi<MentorshipSessionResponseDto> bookSlot(
-            @PathVariable Long slotId,
-            @Valid @RequestBody BookingRequestDto request) {
+            @PathVariable Long slotId) {
         return new ResponseApi<>(
-                sessionService.bookSlot(slotId, request),
+                sessionService.bookSlot(slotId),
                 ResponseCode.SUCCESS
         );
     }
@@ -107,13 +106,11 @@ public class MentorshipSessionController {
     }
 
     @Operation(summary = "Get sessions for the authenticated mentee by status")
-    @GetMapping("/mentee/{menteeId}")
+    @GetMapping("/mentee")
     @PreAuthorize("hasRole('MENTEE')")
-    public ResponseApi<List<MentorshipSessionResponseDto>> getSessionsByMentee(
-            @PathVariable UUID menteeId,
-            @RequestParam SessionStatus status) {
+    public ResponseApi<List<MentorshipSessionResponseDto>> getSessionsByMentee(@RequestParam(required = false) SessionStatus status) {
         return new ResponseApi<>(
-                sessionService.getSessionsByMentee(menteeId, status),
+                sessionService.getSessionsByMentee(status),
                 ResponseCode.SUCCESS
         );
     }

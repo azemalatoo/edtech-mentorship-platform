@@ -13,4 +13,5 @@ public interface MentorshipSessionRepo extends JpaRepository<MentorshipSession, 
     List<MentorshipSession> findByMentorIdAndStatus(UUID mentorId, SessionStatus status);
     List<MentorshipSession> findByMenteeIdAndStatus(UUID menteeId, SessionStatus status);
     List<MentorshipSession> findByMentorIdAndAvailableFromBetween(UUID mentorId, LocalDateTime from, LocalDateTime to);
+    List<MentorshipSession> findByMenteeId(UUID mentorId);
 }

@@ -32,8 +32,4 @@ public class MenteeProfile {
 
     @Enumerated(EnumType.STRING)
     private Lang preferredLanguage;
-
-    @ManyToOne
-    @JoinColumn(name = "interested_category_id", referencedColumnName = "id", nullable = false)
-    private Category interestedCategory;
 }

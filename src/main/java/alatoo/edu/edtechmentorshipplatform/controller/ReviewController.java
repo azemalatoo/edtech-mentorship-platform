@@ -5,6 +5,8 @@ import alatoo.edu.edtechmentorshipplatform.dto.review.ReviewResponseDto;
 import alatoo.edu.edtechmentorshipplatform.services.ReviewService;
 import alatoo.edu.edtechmentorshipplatform.util.ResponseApi;
 import alatoo.edu.edtechmentorshipplatform.util.ResponseCode;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,8 @@ import java.util.UUID;
 public class ReviewController {
     private final ReviewService reviewService;
 
+    @Operation(summary = "Submit a feedback after a session")
+    @ApiResponse(responseCode = "200", description = "Review submitted successfully")
     @PostMapping
     @PreAuthorize("hasAnyRole('MENTOR','MENTEE')")
     public ResponseApi<ReviewResponseDto> submitReview(
@@ -32,6 +36,8 @@ public class ReviewController {
         );
     }
 
+    @Operation(summary = "Get reviews for a user", description = "Retrieves all reviews written about the specified user.")
+    @ApiResponse(responseCode = "200", description = "Reviews retrieved successfully")
     @GetMapping
     @PreAuthorize("hasAnyRole('MENTOR','MENTEE')")
     public ResponseApi<List<ReviewResponseDto>> getReviews(
@@ -42,6 +48,8 @@ public class ReviewController {
         );
     }
 
+    @Operation(summary = "Delete a review", description = "Allows a mentor or mentee to delete their review.")
+    @ApiResponse(responseCode = "200", description = "Review deleted successfully")
     @DeleteMapping("/{reviewId}")
     @PreAuthorize("hasAnyRole('MENTOR','MENTEE')")
     public ResponseApi<Void> deleteReview(@PathVariable Long reviewId) {

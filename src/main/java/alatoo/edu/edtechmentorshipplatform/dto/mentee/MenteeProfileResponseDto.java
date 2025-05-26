@@ -1,6 +1,5 @@
 package alatoo.edu.edtechmentorshipplatform.dto.mentee;
 
-import alatoo.edu.edtechmentorshipplatform.entity.Category;
 import alatoo.edu.edtechmentorshipplatform.enums.Lang;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,8 +18,4 @@ public class MenteeProfileResponseDto {
     private String fieldOfStudy;
     private String careerGoal;
     private Lang preferredLanguage;
-    private Category interestedCategory;
-
-    public MenteeProfileResponseDto(UUID uuid, String bachelor, String computerScience, String softwareDeveloper, String english) {
-    }
 }

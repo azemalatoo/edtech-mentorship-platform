@@ -7,6 +7,7 @@ import alatoo.edu.edtechmentorshipplatform.entity.MentorProfile;
 import alatoo.edu.edtechmentorshipplatform.entity.User;
 import alatoo.edu.edtechmentorshipplatform.enums.ProfileStatus;
 import alatoo.edu.edtechmentorshipplatform.exception.NotFoundException;
+import alatoo.edu.edtechmentorshipplatform.exception.ValidationException;
 import alatoo.edu.edtechmentorshipplatform.mapper.MentorProfileMapper;
 import alatoo.edu.edtechmentorshipplatform.repo.CategoryRepo;
 import alatoo.edu.edtechmentorshipplatform.repo.MentorProfileRepo;
@@ -45,6 +46,10 @@ public class MentorProfileServiceImpl implements MentorProfileService {
 
         Category category = categoryRepo.findById(dto.getExpertiseCategoryId())
                 .orElseThrow(() -> new NotFoundException("Category not found with ID: " + dto.getExpertiseCategoryId()));
+
+        if(mentorProfileRepo.findByUserId(user.getId()).isPresent()){
+            throw new ValidationException(String.format("Mentor with userId %s already exists", user.getId()));
+        }
 
         MentorProfile profile = MentorProfileMapper.toEntity(dto, user, category);
         profile.setProfileStatus(ProfileStatus.PENDING);

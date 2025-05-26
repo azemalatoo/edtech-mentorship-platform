@@ -5,6 +5,8 @@ import alatoo.edu.edtechmentorshipplatform.dto.session.SessionRecordingResponseD
 import alatoo.edu.edtechmentorshipplatform.services.SessionRecordingService;
 import alatoo.edu.edtechmentorshipplatform.util.ResponseApi;
 import alatoo.edu.edtechmentorshipplatform.util.ResponseCode;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,8 @@ import java.util.List;
 public class SessionRecordingController {
     private final SessionRecordingService recordingService;
 
+    @Operation(summary = "Upload a session recording", description = "Allows a mentor to upload a completed session's recording link.")
+    @ApiResponse(responseCode = "201", description = "Recording uploaded successfully")
     @PostMapping
     @PreAuthorize("hasRole('MENTOR')")
     public ResponseApi<SessionRecordingResponseDto> upload(
@@ -29,6 +33,8 @@ public class SessionRecordingController {
         );
     }
 
+    @Operation(summary = "Get recordings by session", description = "Retrieves all recordings for a specific mentorship session.")
+    @ApiResponse(responseCode = "200", description = "Recordings retrieved successfully")
     @GetMapping("/session/{sessionId}")
     @PreAuthorize("hasAnyRole('MENTOR','MENTEE')")
     public ResponseApi<List<SessionRecordingResponseDto>> getBySession(
@@ -38,6 +44,8 @@ public class SessionRecordingController {
         );
     }
 
+    @Operation(summary = "Get recordings for current user", description = "Retrieves all session recordings accessible by the authenticated user.")
+    @ApiResponse(responseCode = "200", description = "Recordings retrieved successfully")
     @GetMapping("/byCurrentUser")
     @PreAuthorize("hasAnyRole('MENTOR','MENTEE')")
     public ResponseApi<List<SessionRecordingResponseDto>> getForCurrentUser() {
@@ -46,6 +54,8 @@ public class SessionRecordingController {
         );
     }
 
+    @Operation(summary = "Delete a session recording", description = "Allows a mentor to delete a recording they uploaded.")
+    @ApiResponse(responseCode = "200", description = "Recording deleted successfully")
     @DeleteMapping("/{recordingId}")
     @PreAuthorize("hasRole('MENTOR')")
     public ResponseApi<Void> delete(@PathVariable Long recordingId) {

@@ -109,4 +109,15 @@ public class GlobalExceptionHandler {
                 ex.getMessage()
         );
     }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ValidationException.class)
+    public ResponseApi<Void> handleValidationException(ValidationException ex) {
+        log.debug("ValidationException: {}", ex.getMessage());
+        return new ResponseApi<>(
+                null,
+                ResponseCode.VALIDATION_ERROR,
+                ex.getMessage()
+        );
+    }
 }

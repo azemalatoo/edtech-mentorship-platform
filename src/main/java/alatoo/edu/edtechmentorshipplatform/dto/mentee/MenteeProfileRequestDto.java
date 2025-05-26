@@ -22,6 +22,6 @@ public class MenteeProfileRequestDto {
     @NotBlank(message = "Career goal is required")
     private String careerGoal;
 
-    @NotBlank(message = "Preferred language is required")
+    @NotNull(message = "Preferred language is required")
     private Lang preferredLanguage;
 }

@@ -14,7 +14,10 @@ public class MentorshipSessionMapper {
                 .mentor(mentor)
                 .availableFrom(dto.getAvailableFrom())
                 .availableTo(dto.getAvailableTo())
+                .meetingLink(dto.getMeetingLink())
+                .providerType(dto.getProviderType())
                 .status(SessionStatus.AVAILABLE)
+                .notes(dto.getNotes())
                 .build();
     }
 
@@ -22,7 +25,7 @@ public class MentorshipSessionMapper {
         return MentorshipSessionResponseDto.builder()
                 .id(e.getId())
                 .mentorId(e.getMentor().getId())
-                .menteeId(e.getMentee()!=null?e.getMentee().getId():null)
+                .menteeId(e.getMentee() != null? e.getMentee().getId():null)
                 .availableFrom(e.getAvailableFrom())
                 .availableTo(e.getAvailableTo())
                 .startedAt(e.getStartedAt())

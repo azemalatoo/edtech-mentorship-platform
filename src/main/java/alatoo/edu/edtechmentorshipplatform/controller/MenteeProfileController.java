@@ -86,6 +86,4 @@ public class MenteeProfileController {
         menteeProfileService.deleteProfile(profileId);
         return new ResponseApi<>(null, ResponseCode.SUCCESS);
     }
-
-
 }

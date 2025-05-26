@@ -14,7 +14,6 @@ public class MenteeProfileMapper {
                 .fieldOfStudy(dto.getFieldOfStudy())
                 .careerGoal(dto.getCareerGoal())
                 .preferredLanguage(dto.getPreferredLanguage())
-                .interestedCategory(dto.getInterestedCategory())
                 .build();
     }
 
@@ -25,7 +24,6 @@ public class MenteeProfileMapper {
                 .fieldOfStudy(entity.getFieldOfStudy())
                 .careerGoal(entity.getCareerGoal())
                 .preferredLanguage(entity.getPreferredLanguage())
-                .interestedCategory(entity.getInterestedCategory())
                 .build();
     }
 }

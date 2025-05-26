@@ -4,6 +4,7 @@ import alatoo.edu.edtechmentorshipplatform.dto.mentee.MenteeProfileRequestDto;
 import alatoo.edu.edtechmentorshipplatform.dto.mentee.MenteeProfileResponseDto;
 import alatoo.edu.edtechmentorshipplatform.entity.MenteeProfile;
 import alatoo.edu.edtechmentorshipplatform.entity.User;
+import alatoo.edu.edtechmentorshipplatform.exception.ValidationException;
 import alatoo.edu.edtechmentorshipplatform.mapper.MenteeProfileMapper;
 import alatoo.edu.edtechmentorshipplatform.repo.MenteeProfileRepo;
 import alatoo.edu.edtechmentorshipplatform.repo.UserRepo;
@@ -31,6 +32,10 @@ public class MenteeProfileServiceImpl implements MenteeProfileService {
     public MenteeProfileResponseDto createProfile(MenteeProfileRequestDto menteeProfileRequestDto) {
         User user = userRepo.findById(menteeProfileRequestDto.getUserID())
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        if(menteeProfileRepo.findByUserId(user.getId()).isPresent()){
+            throw new ValidationException(String.format("Mentee with userId %s already exists", user.getId()));
+        }
 
         MenteeProfile menteeProfile = new MenteeProfile();
         menteeProfile.setUser(user);

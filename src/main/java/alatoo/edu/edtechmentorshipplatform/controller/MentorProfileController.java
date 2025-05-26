@@ -23,7 +23,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/mentor-profile")
 @RequiredArgsConstructor
-@Tag(name = "MenteeProfileController", description = "APIs for managing mentor profiles")
+@Tag(name = "MentorProfileController", description = "APIs for managing mentor profiles")
 public class MentorProfileController{
 
     private final MentorProfileService mentorProfileService;
@@ -93,26 +93,5 @@ public class MentorProfileController{
             @Parameter(description = "User ID") @PathVariable UUID userId) {
         MentorProfileResponseDto result = mentorProfileService.getMentorProfileByUserId(userId);
         return new ResponseApi<>(result, ResponseCode.SUCCESS);
-    }
-
-    @Operation(summary = "Approve mentor profile", description = "Approve a pending mentor profile.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Mentor profile approved successfully"),
-            @ApiResponse(responseCode = "404", description = "Mentor profile not found")
-    })
-    @PutMapping("/{id}/approve")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseApi<MentorProfileResponseDto> approveProfile(
-            @Parameter(description = "Mentor Profile ID") @PathVariable UUID id) {
-        MentorProfileResponseDto result = mentorProfileService.approveMentorProfile(id);
-        return new ResponseApi<>(result, ResponseCode.SUCCESS);
-    }
-
-    @Operation(summary = "Get all mentor profiles")
-    @ApiResponse(responseCode = "200", description = "Mentor profiles retrieved successfully")
-    @GetMapping
-    public ResponseApi<List<MentorProfileResponseDto>> getAllMentorProfiles() {
-        List<MentorProfileResponseDto> profiles = mentorProfileService.getAllMentorProfiles();
-        return new ResponseApi<>(profiles, ResponseCode.SUCCESS);
     }
 }
