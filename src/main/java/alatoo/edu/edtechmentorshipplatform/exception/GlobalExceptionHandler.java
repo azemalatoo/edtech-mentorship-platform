@@ -33,7 +33,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(EmailAlreadyExistsException.class)
     public ResponseApi<Void> handleEmailAlreadyExistException(EmailAlreadyExistsException ex) {
-        log.debug("EmailAlreadyExistsException: {}", ex);
+        log.debug("EmailAlreadyExistsException: ", ex);
         return new ResponseApi<>(null, ResponseCode.VALIDATION_ERROR, ex.getMessage());
     }
 
@@ -65,7 +65,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
     public ResponseApi<Void> handleAll(Exception ex) {
-        log.error("Internal exception : ", ex);
+        log.error("Exception : ", ex);
         String detail = ex.getMessage() != null
                 ? ex.getMessage()
                 : ResponseCode.INTERNAL_SERVER_ERROR.getMessage();
@@ -82,7 +82,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(org.springframework.security.access.AccessDeniedException.class)
     public ResponseApi<Void> handleAccessDenied(org.springframework.security.access.AccessDeniedException ex) {
-        log.debug("Access denied: {}", ex.getMessage());
+        log.debug("AccessDeniedException: {}", ex.getMessage());
         return new ResponseApi<>(null,
                 ResponseCode.ACCESS_NOT_ALLOWED,
                 "You do not have permission to perform this action");
@@ -91,7 +91,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(ExpiredJwtException.class)
     public ResponseApi<Void> handleExpiredJwt(ExpiredJwtException ex) {
-        log.debug("JWT expired: {}", ex.getMessage());
+        log.debug("ExpiredJwtException: {}", ex.getMessage());
         return new ResponseApi<>(
                 null,
                 ResponseCode.UNAUTHORIZED,
@@ -99,4 +99,14 @@ public class GlobalExceptionHandler {
         );
     }
 
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(RefreshTokenException.class)
+    public ResponseApi<Void> handleRefreshTokenException(RefreshTokenException ex) {
+        log.debug("RefreshTokenException: {}", ex.getMessage());
+        return new ResponseApi<>(
+                null,
+                ResponseCode.UNAUTHORIZED,
+                ex.getMessage()
+        );
+    }
 }

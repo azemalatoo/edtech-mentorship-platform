@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -48,5 +49,29 @@ public class AuthenticationController{
             @Valid @RequestBody LoginRequest request) {
         LoginResponse token = authService.login(request);
         return new ResponseApi<>(token, ResponseCode.SUCCESS);
+    }
+
+    @Operation(summary = "Refresh access token", description = "Exchange a refresh token for a new access (and refresh) token pair")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Tokens refreshed successfully"),
+            @ApiResponse(responseCode = "401", description = "Refresh token expired or unauthorized")
+    })
+    @PostMapping("/refresh")
+    public ResponseApi<LoginResponse> refresh(
+            @RequestParam("refreshToken") String refreshToken) {
+        LoginResponse resp = authService.refreshTokens(refreshToken);
+        return new ResponseApi<>(resp, ResponseCode.SUCCESS);
+    }
+
+    @Operation(summary = "Logout user", description = "Revoke current user's refresh token and end session")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Logout successful"),
+            @ApiResponse(responseCode = "401", description = "User not authenticated")
+    })
+    @PostMapping("/logout")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseApi<Void> logout() {
+        authService.logoutCurrentUser();
+        return new ResponseApi<>(null, ResponseCode.SUCCESS);
     }
 }

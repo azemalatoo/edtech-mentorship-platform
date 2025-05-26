@@ -8,4 +8,6 @@ import alatoo.edu.edtechmentorshipplatform.dto.auth.RegisterRequest;
 public interface UserAuthService {
     RegisterResponse register(RegisterRequest request);
     LoginResponse login(LoginRequest request);
+    LoginResponse refreshTokens(String refreshToken);
+    void logoutCurrentUser();
 }
