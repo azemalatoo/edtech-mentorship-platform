@@ -26,6 +26,7 @@ public class MentorProfileMapper {
 
     public static MentorProfileResponseDto toDto(MentorProfile mentorProfile) {
         MentorProfileResponseDto dto = new MentorProfileResponseDto();
+        dto.setFullName(mentorProfile.getUser().getFullName());
         dto.setId(mentorProfile.getId());
         dto.setBio(mentorProfile.getBio());
         dto.setHeadline(mentorProfile.getHeadline());
