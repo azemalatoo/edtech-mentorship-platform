@@ -22,15 +22,16 @@ public class ConversationServiceImpl implements ConversationService {
 
     @Override
     @Transactional
-    public Conversation createConversation(Long mentorId, Long menteeId) {
-        User mentor = userRepo.findById(java.util.UUID.fromString(mentorId.toString()))
+    public Conversation createConversation(UUID mentorId, UUID menteeId) {
+        User mentor = userRepo.findById(mentorId)
                 .orElseThrow(() -> new IllegalArgumentException("Mentor not found"));
-        User mentee = userRepo.findById(java.util.UUID.fromString(menteeId.toString()))
+        User mentee = userRepo.findById(menteeId)
                 .orElseThrow(() -> new IllegalArgumentException("Mentee not found"));
         Conversation conv = Conversation.builder()
                 .mentor(mentor)
                 .mentee(mentee)
                 .status(ConversationStatus.OPEN)
+                .isActive(Boolean.TRUE)
                 .lastActiveAt(LocalDateTime.now())
                 .build();
         return conversationRepo.save(conv);
@@ -38,7 +39,6 @@ public class ConversationServiceImpl implements ConversationService {
 
     @Override
     public List<Conversation> getConversationsForUser(UUID userId) {
-        // assuming you add query methods to repo: findByMentorIdOrMenteeId
         return conversationRepo.findByMentorIdOrMenteeId(userId, userId);
     }
 

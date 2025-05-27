@@ -29,7 +29,7 @@ public class ConversationController {
     @ApiResponse(responseCode = "200", description = "Conversation created")
     @PostMapping
     @PreAuthorize("hasAnyRole('MENTOR','MENTEE')")
-    public ResponseEntity<Conversation> create(@RequestParam Long mentorId, @RequestParam Long menteeId) {
+    public ResponseEntity<Conversation> create(@RequestParam UUID mentorId, @RequestParam UUID menteeId) {
         return ResponseEntity.ok(conversationService.createConversation(mentorId, menteeId));
     }
 

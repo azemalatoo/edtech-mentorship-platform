@@ -30,7 +30,7 @@ public class MentorProfile {
 
     private String bio;
     private String headline;
-    private int yearsExperience;
+    private Integer yearsExperience;
     private String linkedinUrl;
 
     @ElementCollection
@@ -43,7 +43,7 @@ public class MentorProfile {
     @JoinColumn(name = "expertise_category_id", referencedColumnName = "id")
     private Category expertiseCategory;
 
-    private double averageRating;
+    private Double averageRating;
 
     private ProfileStatus profileStatus;
 }
