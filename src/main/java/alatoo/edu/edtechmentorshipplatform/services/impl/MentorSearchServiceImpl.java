@@ -45,6 +45,8 @@ public class MentorSearchServiceImpl implements MentorSearchService {
                         .headline(m.getHeadline())
                         .yearsExperience(m.getYearsExperience())
                         .averageRating(m.getAverageRating())
+                        .categoryId(m.getExpertiseCategory().getId())
+                        .categoryName(m.getExpertiseCategory().getName())
                         .build());
     }
 }

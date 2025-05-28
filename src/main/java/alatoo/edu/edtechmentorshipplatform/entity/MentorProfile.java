@@ -21,11 +21,12 @@ import java.util.UUID;
 @Builder
 public class MentorProfile {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "user_id", columnDefinition = "uuid")
     private UUID id;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id", nullable = false)
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @MapsId
+    @JoinColumn(name = "user_id")
     private User user;
 
     private String bio;
@@ -37,6 +38,7 @@ public class MentorProfile {
     private List<String> certifications = new ArrayList<>();
 
     @ElementCollection
+    @Enumerated(EnumType.STRING)
     private List<Lang> languages = new ArrayList<>();
 
     @ManyToOne
@@ -45,5 +47,6 @@ public class MentorProfile {
 
     private Double averageRating;
 
+    @Enumerated(EnumType.STRING)
     private ProfileStatus profileStatus;
 }

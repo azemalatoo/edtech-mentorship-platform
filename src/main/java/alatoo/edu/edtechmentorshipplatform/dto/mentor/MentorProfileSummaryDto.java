@@ -13,4 +13,6 @@ public class MentorProfileSummaryDto {
     private String headline;
     private int yearsExperience;
     private double averageRating;
+    private Long categoryId;
+    private String categoryName;
 }

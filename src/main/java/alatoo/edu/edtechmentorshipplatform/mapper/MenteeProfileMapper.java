@@ -9,7 +9,6 @@ public class MenteeProfileMapper {
     public static MenteeProfile toEntity(MenteeProfileResponseDto dto, User user) {
         return MenteeProfile.builder()
                 .id(dto.getId())
-                .user(user)
                 .educationLevel(dto.getEducationLevel())
                 .fieldOfStudy(dto.getFieldOfStudy())
                 .careerGoal(dto.getCareerGoal())

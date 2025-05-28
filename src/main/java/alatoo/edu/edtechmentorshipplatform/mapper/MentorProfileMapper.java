@@ -12,7 +12,6 @@ public class MentorProfileMapper {
 
     public static MentorProfile toEntity(MentorProfileRequestDto dto, User user, Category category) {
         return MentorProfile.builder()
-                .user(user)
                 .bio(dto.getBio())
                 .headline(dto.getHeadline())
                 .yearsExperience(dto.getYearsExperience())
