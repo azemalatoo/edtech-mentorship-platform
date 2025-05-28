@@ -2,15 +2,14 @@
 
 [![Java](https://img.shields.io/badge/Java-17-blue.svg)](https://www.oracle.com/java/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.0.4-brightgreen.svg)](https://spring.io/projects/spring-boot)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 ---
 
-## 🚀 Overview
+## Overview
 
 **MentorConnect** is a centralized, locally‑adapted EdTech mentorship platform built with **Java 17** and **Spring Boot**. It connects learners across Kyrgyzstan—urban or rural—with experienced mentors tailored to their interests and career goals. By combining mentor-mentee matching, real‑time communication, and progress tracking, MentorConnect empowers students to gain real‑world insights and clear pathways for academic and professional growth.
 
-## 📋 Table of Contents
+## Table of Contents
 
 1. [Key Features](#key-features)
 2. [Architecture & Tech Stack](#architecture--tech-stack)
@@ -20,26 +19,25 @@
    * [Prerequisites](#prerequisites)
    * [Clone & Run](#clone--run)
    * [API Documentation](#api-documentation)
-5. [Usage Examples](#usage-examples)
-6. [Testing](#testing)
-7. [Contributing](#contributing)
+5. [Testing](#testing)
+6. [Contributing](#contributing)
 
 ---
 
-## ⭐ Key Features
+## Key Features
 
 * **User Onboarding & Security**: JWT‑powered registration, login, and role‑based access control.
 * **Profile Management**: Create detailed mentor & mentee profiles with expertise tags and goals.
 * **Smart Matching**: Algorithmic pairing of mentors and learners by interests, availability, and experience.
-* **Session Scheduling**: Calendar sync, availability slots, and automated reminders.
-* **Real‑Time Communication**: In‑app messaging via WebSockets and hooks for video calls.
+* **Session Scheduling**: Book mentorship sessions and schedule. 
+* **Real‑Time Communication**: In‑app messaging via WebSockets.
 * **Progress Tracking**: Learning goals, milestones, ratings, and feedback loops.
-* **Administration Tools**: Dashboard for approval workflows, moderation, and analytics.
+* **Administration Tools**: Dashboard for mentors aproval and moderation tools.
 * **Interactive API**: Swagger‑documented endpoints for easy integration with web and mobile frontends.
 
 ---
 
-## 🏗️ Architecture & Tech Stack
+## Architecture & Tech Stack
 
 | Layer             | Technology                                     | Purpose                                      |
 | ----------------- | ---------------------------------------------- | -------------------------------------------- |
@@ -54,13 +52,14 @@
 
 ---
 
-## 📊 Data Model
+## Data Model
+<img src="https://github.com/user-attachments/assets/c4f854c0-6152-414b-8bbb-b9b728a928a3" alt="tables UML" width="400" />
 
-![ER Diagram](https://raw.githubusercontent.com/azemalatoo/mentorconnect-edtech-platform/main/diagrams/er-diagram.png)
+
 
 ---
 
-## 🔧 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -94,44 +93,7 @@ https://mentor-connect-03d663062b56.herokuapp.com/swagger-ui/index.html
 
 ---
 
-## 💡 Usage Examples
-
-1. **Register a new user**
-
-   ```bash
-   POST /api/auth/register
-   {
-     "username": "julia",
-     "email": "julia@example.com",
-     "password": "P@ssw0rd"
-   }
-   ```
-
-2. **Login & Retrieve JWT**
-
-   ```bash
-   POST /api/auth/login
-   {
-     "username": "julia",
-     "password": "P@ssw0rd"
-   }
-   ```
-
-3. **Create a Mentorship Session**
-
-   ```bash
-   POST /api/sessions
-   Authorization: Bearer <ACCESS_TOKEN>
-   {
-     "mentorId": "<UUID>",
-     "startTime": "2025-06-01T10:00:00",
-     "endTime": "2025-06-01T11:00:00"
-   }
-   ```
-
----
-
-## 🧪 Testing
+## Testing
 
 * Run all unit and integration tests:
 
@@ -142,7 +104,7 @@ https://mentor-connect-03d663062b56.herokuapp.com/swagger-ui/index.html
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please open issues or create pull requests for bug fixes, enhancements, or new features.
 
