@@ -7,7 +7,7 @@
 
 ## Overview
 
-**MentorConnect** is a centralized, locally‑adapted EdTech mentorship platform built with **Java 17** and **Spring Boot**. It connects learners across Kyrgyzstan—urban or rural—with experienced mentors tailored to their interests and career goals. By combining mentor-mentee matching, real‑time communication, and progress tracking, MentorConnect empowers students to gain real‑world insights and clear pathways for academic and professional growth.
+**MentorConnect** is a centralized, locally‑adapted EdTech mentorship platform built with **Java 17** and **Spring Boot**. It connects learners across Kyrgyzstan with experienced mentors tailored to their interests and career goals. By combining mentor-mentee matching, real‑time communication, and progress tracking, MentorConnect empowers students to gain real‑world insights and clear pathways for academic and professional growth.
 
 ## Table of Contents
 
